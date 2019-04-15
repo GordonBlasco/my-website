@@ -11,9 +11,9 @@ education:
   - course: MEng in Artificial Intelligence
     institution: Massachusetts Institute of Technology
     year: 2009
-  - course: BSc in Artificial Intelligence
-    institution: Massachusetts Institute of Technology
-    year: 2008
+  - course: BSc in Environmental Studies
+    institution: University of California Santa Barbara
+    year: 2019
 email: ""
 interests:
 - Artificial Intelligence
