@@ -11,7 +11,7 @@ email: ""
 interests:
 - Enviornmental Data Science
 - Spatial Analysis and GIS
-- Oceonographic Ecosystem Ecology
+- Oceanographic Ecosystem Ecology
 name: Gordon Blasco
 organizations:
 - name: University of California Santa Barbara
