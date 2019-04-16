@@ -9,7 +9,7 @@ education:
     year: 2019
 email: ""
 interests:
-- Enviornmental Data Science
+- Environmental Data Science
 - Spatial Analysis and GIS
 - Oceanographic Ecosystem Ecology
 name: Gordon Blasco
