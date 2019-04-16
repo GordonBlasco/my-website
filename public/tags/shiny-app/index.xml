@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Projects on Gordon Blasco</title>
-    <link>/project/</link>
-    <description>Recent content in Projects on Gordon Blasco</description>
+    <title>Shiny App on Gordon Blasco</title>
+    <link>/tags/shiny-app/</link>
+    <description>Recent content in Shiny App on Gordon Blasco</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 15 Apr 2019 00:00:00 -0700</lastBuildDate>
     
-	<atom:link href="/project/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/shiny-app/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -18,15 +18,6 @@
       
       <guid>/project/external-project/</guid>
       <description>Distributions and abundances of various seagull species in California.</description>
-    </item>
-    
-    <item>
-      <title>Internal Project</title>
-      <link>/project/internal-project/</link>
-      <pubDate>Wed, 27 Apr 2016 00:00:00 -0700</pubDate>
-      
-      <guid>/project/internal-project/</guid>
-      <description>An example of using the in-built project page.</description>
     </item>
     
   </channel>

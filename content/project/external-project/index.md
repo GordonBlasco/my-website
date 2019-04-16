@@ -1,11 +1,11 @@
 ---
-date: "2016-04-27T00:00:00-07:00"
-external_link: http://example.org
+date: "2019-04-15T00:00:00-07:00"
+external_link: https://california-seagulls.shinyapps.io/seagull_app/
 image:
-  caption: Photo by Toa Heftiba on Unsplash
+  caption: 
   focal_point: Smart
-summary: An example of linking directly to an external project website using `external_link`.
+summary: Distributions and abundances of various seagull species in California.
 tags:
-- Demo
-title: External Project
+- Shiny App
+title: Seagull Shiny App
 ---

@@ -35,6 +35,15 @@ Click on the **Slides** button above to view the built-in slides feature.
     </item>
     
     <item>
+      <title>Seagull Shiny App</title>
+      <link>/project/external-project/</link>
+      <pubDate>Mon, 15 Apr 2019 00:00:00 -0700</pubDate>
+      
+      <guid>/project/external-project/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>An example preprint / working paper</title>
       <link>/publication/preprint/</link>
       <pubDate>Sun, 07 Apr 2019 00:00:00 -0700</pubDate>
@@ -141,15 +150,6 @@ rm Untitled.md
       <guid>/privacy/</guid>
       <description>&lt;p&gt;&amp;hellip;&lt;/p&gt;
 </description>
-    </item>
-    
-    <item>
-      <title>External Project</title>
-      <link>/project/external-project/</link>
-      <pubDate>Wed, 27 Apr 2016 00:00:00 -0700</pubDate>
-      
-      <guid>/project/external-project/</guid>
-      <description></description>
     </item>
     
     <item>
