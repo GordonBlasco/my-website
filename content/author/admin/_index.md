@@ -33,7 +33,7 @@ user_groups:
 - Visitors
 ---
 
-Hi, I am soon to be graduate from UCSB with a Bachelors of Science in Environmental Studies with an emphasis in Chemistry. During my undergrad I worked as a research intern with the Santa Barbara Coastal Long Term Ecological Research Project. Over those two years I studied novel forms of organic nitrogen as a source nutrient source for giant kelp. 
+Hi, I am soon to be graduate from UCSB with a Bachelors of Science in Environmental Studies with an emphasis in Chemistry. During my undergrad I worked as a research intern with the Santa Barbara Coastal Long Term Ecological Research Project. Over those two years I studied novel forms of organic nitrogen as a source of nutrients for giant kelp. 
 
 While I worked primarily on seaweed physiology I also developed an interest in the vast amount of data being collected by the  ecologists in my lab and what tools they were using to store, access, and analyze it. Through this I was introduced to R, R studio, and Git. Since then I have been taking every opportunity to build my coding and analytical skills. This includes attending workshops from eco-data-science, taking graduate level course work through the Bren School, and a lot of self-guided learning. 
 
