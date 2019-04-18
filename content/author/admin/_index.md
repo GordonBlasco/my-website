@@ -37,5 +37,5 @@ Hi, I am soon to be graduate from UCSB with a Bachelors of Science in Environmen
 
 While I worked primarily on seaweed physiology I also developed an interest in the vast amount of data being collected by the  ecologists in my lab and what tools they were using to store, access, and analyze it. Through this I was introduced to R, R studio, and Git. Since then I have been taking every opportunity to build my coding and analytical skills. This includes attending workshops from eco-data-science, taking graduate level course work through the Bren School, and a lot of self-guided learning. 
 
-I like to spend my leisure time outdoors. I’m an avid backpacker and birdwatcher. You can read my nature blog <a href="https://overnightnaturalist.com">here</a>, better yet, you can catch me at your local birding hotspot or where ever live music is played. 
+I like to spend my leisure time outdoors. I’m an avid backpacker and birdwatcher. You can read my nature blog <a href="https://overnightnaturalist.com">here</a>, better yet, you can catch me at your local birding hotspot or wherever live music is played. 
 
