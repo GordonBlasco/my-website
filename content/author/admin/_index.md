@@ -7,7 +7,7 @@ education:
   - course: BSc in Environmental Studies
     institution: University of California Santa Barbara
     year: 2019
-email: ""
+email: "gordonblasco@gmail.com"
 interests:
 - Environmental Data Science
 - Spatial Analysis and GIS
