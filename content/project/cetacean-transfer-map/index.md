@@ -1,11 +1,11 @@
 ---
 date: "2019-04-15T00:00:00-07:00"
-external_link: https://california-seagulls.shinyapps.io/seagull_app/
+external_link: https://raw.githack.com/GordonBlasco/cetacean-transfer-map/master/cetamapfinal.html
 image:
   caption: 
   focal_point: Smart
-summary: Distributions and abundances of various seagull species in California.
+summary: Map of cetaceans in captivity tranfers between aquariums.  
 tags:
-- Shiny App
-title: Seagull Shiny App
+- Other
+title: Transfer Network Map
 ---
