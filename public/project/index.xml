@@ -21,6 +21,15 @@
     </item>
     
     <item>
+      <title>Slice-of-Life Related Anime Network</title>
+      <link>/project/networkd3-vis/</link>
+      <pubDate>Mon, 15 Apr 2019 00:00:00 -0700</pubDate>
+      
+      <guid>/project/networkd3-vis/</guid>
+      <description>A visualization of related anime TV shows from tidy tuesday 2019. Made using made using the NetworkD3 package</description>
+    </item>
+    
+    <item>
       <title>Transfer Network Map</title>
       <link>/project/cetacean-transfer-map/</link>
       <pubDate>Mon, 15 Apr 2019 00:00:00 -0700</pubDate>
