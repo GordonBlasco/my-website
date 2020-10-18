@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>admin on Gordon Blasco</title>
@@ -54,16 +54,6 @@
       
       <guid>/publication/conference-paper/</guid>
       <description>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis posuere tellus ac convallis placerat. Proin tincidunt magna sed ex sollicitudin condimentum.</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>/author/admin/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>/author/admin/</guid>
-      <description>Hi, I am a soon to be graduate from UCSB with a Bachelors of Science in Environmental Studies with an emphasis in Chemistry. During my undergrad I worked as a research intern with the Santa Barbara Coastal Long Term Ecological Research Project. Over those two years I studied novel forms of organic nitrogen as a source of nutrients for giant kelp.
-While I worked primarily on seaweed physiology I also developed an interest in the vast amount of data being collected by the ecologists in my lab and what tools they were using to store, access, and analyze it.</description>
     </item>
     
   </channel>

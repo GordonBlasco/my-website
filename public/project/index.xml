@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Projects on Gordon Blasco</title>
@@ -12,30 +12,12 @@
     
     
     <item>
-      <title>Seagull Shiny App</title>
-      <link>/project/external-project/</link>
-      <pubDate>Mon, 15 Apr 2019 00:00:00 -0700</pubDate>
-      
-      <guid>/project/external-project/</guid>
-      <description>Distributions and abundances of various seagull species in California.</description>
-    </item>
-    
-    <item>
-      <title>Slice-of-Life Related Anime Network</title>
+      <title>IMBD shared crew network</title>
       <link>/project/networkd3-vis/</link>
       <pubDate>Mon, 15 Apr 2019 00:00:00 -0700</pubDate>
       
       <guid>/project/networkd3-vis/</guid>
-      <description>A visualization of related anime TV shows from tidy tuesday 2019. Made using made using the NetworkD3 package</description>
-    </item>
-    
-    <item>
-      <title>Transfer Network Map</title>
-      <link>/project/cetacean-transfer-map/</link>
-      <pubDate>Mon, 15 Apr 2019 00:00:00 -0700</pubDate>
-      
-      <guid>/project/cetacean-transfer-map/</guid>
-      <description>Map of cetaceans in captivity tranfers between aquariums.</description>
+      <description>A visualization of top rated movies on IMBD connected by shared actors, directors, writers, and producers, Made with the NetworkD3 package.</description>
     </item>
     
     <item>
@@ -45,6 +27,24 @@
       
       <guid>/project/mutate-jitter-sp/</guid>
       <description>A function for adding jitter to overlapping spatial points in R.</description>
+    </item>
+    
+    <item>
+      <title>Seagull Shiny App</title>
+      <link>/project/external-project/</link>
+      <pubDate>Mon, 15 Apr 2019 00:00:00 -0700</pubDate>
+      
+      <guid>/project/external-project/</guid>
+      <description>Distributions and abundances of various seagull species in California.</description>
+    </item>
+    
+    <item>
+      <title>Transfer Network Map</title>
+      <link>/project/cetacean-transfer-map/</link>
+      <pubDate>Mon, 15 Apr 2019 00:00:00 -0700</pubDate>
+      
+      <guid>/project/cetacean-transfer-map/</guid>
+      <description>Map of cetaceans in captivity tranfers between aquariums.</description>
     </item>
     
   </channel>
