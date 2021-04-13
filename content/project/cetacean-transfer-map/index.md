@@ -1,6 +1,6 @@
 ---
 date: "2019-04-15T00:00:00-07:00"
-external_link: https://gordonblasco.github.io/cetacean-transfer-map/cetamapfinal
+external_link: https://gordonblasco.github.io/side-projects/cetacean-transfer-map/cetamapfinal
 image:
   caption: 
   focal_point: Smart
