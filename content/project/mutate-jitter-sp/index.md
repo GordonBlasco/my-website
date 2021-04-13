@@ -1,6 +1,6 @@
 ---
 date: "2019-04-15T00:00:00-07:00"
-external_link: https://gordonblasco.github.io/mutate-jitter-sp/example_markdown
+external_link: https://gordonblasco.github.io/side-projects/mutate-jitter-sp/example_markdown
 image:
   caption: 
   focal_point: Smart
