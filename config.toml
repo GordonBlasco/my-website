@@ -126,7 +126,7 @@ enableEmoji = true
   [[menu.header]]
     name = "Resume"
     title = "Resume"
-    url = "https://www.gordonblasco.com/files/gordon_blasco_resume_new.pdf"
+    url = "https://www.gordonblasco.com/files/Gordon Blasco Resume.pdf"
     weight = 5
     
     
