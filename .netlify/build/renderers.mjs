@@ -1,4 +1,4 @@
-import { l as renderJSX, n as createVNode, o as AstroJSX, p as AstroUserError } from './chunks/astro/server_C1RCjSvS.mjs';
+import { l as renderJSX, n as createVNode, o as AstroJSX, p as AstroUserError } from './chunks/astro/server_DWuHNaL_.mjs';
 import 'kleur/colors';
 import 'clsx';
 
@@ -48,6 +48,6 @@ const renderer = {
 };
 var server_default = renderer;
 
-const renderers = [Object.assign({"name":"astro:jsx","serverEntrypoint":"file:///Users/gord/dev/my-website/node_modules/@astrojs/mdx/dist/server.js"}, { ssr: server_default }),];
+const renderers = [Object.assign({"name":"astro:jsx","serverEntrypoint":"file:///Users/gord/dev/astro-quickstart-main/node_modules/@astrojs/mdx/dist/server.js"}, { ssr: server_default }),];
 
 export { renderers };
