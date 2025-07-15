@@ -1,0 +1,80 @@
+---
+export interface Props {
+  title: string;
+  authors: string;
+  journal: string;
+  paperUrl: string;
+  vizUrl?: string;
+}
+
+const { title, authors, journal, paperUrl, vizUrl } = Astro.props;
+---
+
+<div class="publication-card">
+  <h5>{title}</h5>
+  <p>{authors}</p>
+  <p>{journal}</p>
+  <div class="button-container">
+    <a href={paperUrl} class="button" target="_blank" rel="noopener noreferrer">Paper</a>
+    {
+      vizUrl && (
+        <a href={vizUrl} class="button" target="_blank" rel="noopener noreferrer">Visualization</a>
+      )
+    }
+  </div>
+</div>
+
+<style>
+  .publication-card {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--text-dim, #829181);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    text-decoration: none;
+    color: var(--text-main, #5c6a72);
+    background-color: var(--background-1, #f8f5e4);
+    transition:
+      transform 0.2s ease-in-out,
+      box-shadow 0.2s ease-in-out;
+  }
+  .publication-card:hover,
+  .publication-card:focus-within {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+  }
+  .publication-card h3 {
+    margin: 0;
+    margin-bottom: 0.5rem;
+  }
+  .publication-card p {
+    margin: 0;
+    margin-bottom: 0.5rem;
+  }
+
+  .publication-card p:last-of-type {
+    margin-bottom: 1rem;
+  }
+
+  .button-container {
+    display: flex;
+    gap: 1rem;
+    margin-top: auto;
+  }
+
+  .button {
+    padding: 0.25rem 0.75rem;
+    background-color: var(--accent);
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 0.9rem;
+    transition: background-color 0.2s ease;
+  }
+
+  .button:hover {
+    background-color: #7a8d01; /* A slightly darker shade of accent */
+  }
+</style>
