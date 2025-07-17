@@ -1,0 +1,32 @@
+---
+/* src/components/animated-icons/Logo.astro */
+---
+
+<a href="/" aria-label="Home" class="logo-link">
+  <svg
+    class="logo-icon"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="currentColor"
+  >
+    <path d="M12 2C8.13 2 5 5.13 5 9c0 4.25 4 7.75 7 11 3-3.25 7-6.75 7-11 0-3.87-3.13-7-7-7z" />
+  </svg>
+</a>
+
+<style>
+  .logo-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+    text-decoration: none;
+    height: 100%;
+  }
+
+  .logo-icon {
+    width: 32px;
+    height: 32px;
+    color: var(--color-accent, #556b2f); /* fallback green */
+  }
+</style>
