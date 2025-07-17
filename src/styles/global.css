@@ -107,6 +107,9 @@ h4 {
 }
 h5 {
   font-size: 1.25em;
+  border-bottom: 2px solid currentColor; /* or any specific color */
+  padding-bottom: 0.25em; /* spacing between text and line */
+  margin-bottom: 1em; /* spacing between h1 and next content */
 }
 
 .subtitle {
