@@ -1,6 +1,6 @@
 ---
 import BaseHead from "../../components/layouts/BaseHead.astro";
-import Header from "../../components/layouts/Header.astro";
+import Navbar from "../../components/layouts/navbar/Navbar.astro"; // <- updated import
 import Footer from "../../components/layouts/Footer.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../../consts";
 import { getCollection } from "astro:content";
@@ -105,7 +105,7 @@ const topics = Array.from(
     </style>
   </head>
   <body>
-    <Header />
+    <Navbar />
     <main>
       <aside class="sidebar">
         <h3>Topics</h3>
