@@ -2,6 +2,8 @@
 import BaseHead from "../components/layouts/BaseHead.astro";
 import Navbar from "../components/layouts/navbar/Navbar.astro"; // <- updated import
 import Footer from "../components/layouts/Footer.astro";
+import Polaroid from "../components/mdx/Poloroid.astro";
+import blogPlaceholder from "../assets/baby_runi.JPEG";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 ---
 
@@ -14,7 +16,14 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
     <Navbar /> <!-- replaced Header with Navbar -->
     <main>
       <h1>Under Construction</h1>
-      <p>This is my personally crafted website. If you are reading this you are too early and much of the site is still being populated.</p>
+      <div class="float-polaroid">
+        <Polaroid 
+          src={blogPlaceholder}
+          alt="My dog" 
+          caption="Baby Runi"
+        />
+      </div>
+      <p>This is my personally crafted website. If you are reading this you are much too early and the site is still being populated and tweaked.</p>
       <p>Here are a few things I will be posting about:</p>
       <ul>
         <li>Self-hosting and running a home server</li>

@@ -223,3 +223,8 @@ hr {
   white-space: nowrap;
   border: 0;
 }
+.float-polaroid {
+  float: right;
+  margin: 0 0 1em 1em;
+  max-width: 300px; /* adjust to fit your layout */
+}
