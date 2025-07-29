@@ -1,0 +1,53 @@
+---
+import Layout from "../layouts/BlogPost.astro";
+import AboutHeroImage from "../assets/blog-placeholder-about.jpg";
+import Polaroid from "../components/mdx/Poloroid.astro";
+import blogPlaceholder from "../assets/baby_runi.JPEG";
+---
+
+<Layout
+  title="Runi Instructions"
+  description="about me page - out of date"
+  pubDate={new Date("July 14 2025")}
+>
+<div class="float-polaroid">
+        <Polaroid 
+          src={blogPlaceholder}
+          alt="My dog" 
+          caption="Baby Runi"
+        />
+      </div>
+<p>Runi’s people:</p>
+Runi’s vet is Dr. Annie Larson at Adobe pet hospital (805) 682-2555
+
+
+<p></p>
+<b>Please keep her yellow collar on at all times. The harness can come on/off whenever, but we want to make sure she always has her tag. Thank you!</b>
+
+Meals
+<p>Runi only eats one meal a day – dinner around 6pm (any time in the evening is fine though). She has two scoops of kibble (total is 2/3 cups) plus a full Nulo packet mixed in. The packets don’t need to be refrigerated.<p>
+ 
+Walks
+<p>Runi is an adventure pup! She loves walks, the beach, hikes. She does not swim. For the first couple walks, she should stay on a leash, but once she gets to know you and will come back to you, she can be off leash in a safe area like Douglas or the beach. She is slow to warm up to other dogs and is a bit shy, but at her core she’s a dog’s dog and loves being part of a pack. She only needs one walk a day and is completely content sleeping the rest of the day away. She’s also fine to be left alone at home for 4-5 hours at a time, she’ll just sleep.<p>
+<p>When on a leash, attach the leash to the harness ring on Runi’s back. If you attach it on her chest, she will keep tripping over the leash.<p>
+ 
+Commands she knows
+<ul>
+<li>Sit (visual is a closed fist in the air)</li>
+<li>Come (works best if you squat down to her level)</li>
+<li>Up Up (she will jump up on a couch, log, rock, etc. if you point and say Up Up)</li>
+<li>We’re working on wait/stay</li>
+</ul>
+THANK YOU! Hope you and Runi have fun together!
+<hr>
+<h1>Runi Facts</h1>
+<p>Runi is a rescue from South Korea and is just a little baby.</p>
+  
+</Layout>
+<style>
+  hr {
+    border: none; /* Remove default border */
+    border-top: 2px solid #ccc; /* Add a custom top border */
+    margin: 20px 0; /* Add vertical margin for spacing */
+  }
+</style>
