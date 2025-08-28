@@ -1,0 +1,31 @@
+<div class="callout-disclaimer">
+  <p><slot /></p>
+
+  <style>
+    .callout-disclaimer {
+      padding: var(--space-m, 1rem) var(--space-l, 1.5rem);
+      border-radius: 8px;
+      border: 1px solid var(--background-4);
+      background: var(--background-1);
+      margin: 1.5rem 0;
+    }
+
+    .callout-disclaimer :global(p) {
+      margin: 0;
+      font-weight: 400;
+      color: var(--text-main); /* darkest font color from globals */
+      font-size: 1.1rem;
+      line-height: 1.5;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .callout-disclaimer {
+        border-color: var(--background-5);
+        background: var(--background-2);
+      }
+      .callout-disclaimer :global(p) {
+        color: var(--text-main); /* still use main in dark mode */
+      }
+    }
+  </style>
+</div>

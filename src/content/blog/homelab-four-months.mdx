@@ -1,0 +1,49 @@
+---
+title: "Homelab: First 4 Months"
+description: "the first 4 months with my homelab"
+pubDate: "August 28 2025"
+type: "blog"
+topics: [OMSCS]
+heroImage: "../../assets/blog-placeholder-4.jpg"
+---
+
+import CalloutDisclaimer from "../../components/mdx/CalloutDisclaimer.astro";
+
+<CalloutDisclaimer>
+**TLDR:** 
+- **I love Kubernetes** for my homegrown data lakehouse. It gives me a place to practice GitOps, infrastructure management, scaling, and new data engineering technologies.
+
+- **I don’t love Kubernetes** for running everyday apps. The patience required to get even a single app working (and then discover it’s not the right app) was too much, but I found that **Proxmox** fills that gap perfectly. It lets me spin up and test apps quickly without the heavy overhead, while Kubernetes continues powering the data side of the homelab.
+	
+- I landed on a split design for my homelab. One miniPC runs kubernetes on Ubuntu Server and powers the data side of the homelab, and the other miniPC runs Proxmox and serves up traditional home server services.
+</CalloutDisclaimer>
+
+### Original Goal
+It has been four months since I began my homelab in earnest. My original vision was straightforward: leverage two mini PCs as a single Kubernetes cluster and connect a Raspberry Pi with an SSD as the NAS. The idea was to implement a barebones cloud (scalable compute and scalable networked storage) while hosting a few apps and building a sandbox for experimenting with data engineering tools.
+
+This project had a very steep learning curve, and I really knew nothing going in. I had read about the difference between Proxmox and Kubernetes, but I didn’t really understand it. Everywhere I looked, I encountered new complexity that couldn’t just be avoided. Eventually, I had no choice but to sit down and learn what an ingress was, how to set up containers in containers, how to do manage secrets.
+
+I have to give a huge shoutout to the Kubecraft Skool community and Mischa van den Burg. His tutorials were incredibly helpful for getting started with Kubernetes. I left those classes with a working homelab, a foundation I could iterate on, and the confidence to manage apps in Kubernetes. Even though I’m still only scratching the surface, I now feel comfortable enough to set up apps and manage my cluster.
+
+Fun note: the easiest part of the entire process was scaling compute to the second mini PC. I know this is Kubernetes’ big selling point, but it was still pretty amazing to scale my own cluster with just two commands.
+
+### Serious Pain Point
+However, I had a very unpleasant experience when I was searching for self-hosted Notion alternatives. I started with Affine, and it took me an entire evening to get all the kustomize.yaml files correct enough to just reach it locally in the browser via port forwarding.
+
+After hours of fighting with Kubernetes, I finally got Affine running, and pretty much immediately realized it wasn’t the right app for me. And at that moment the idea of repeating that entire process again just to test the next app sounded like absolute hell and really took the wind out of my sails.
+
+Now, yes, I could have read more about it first or spun it up locally with a simple docker compose before figuring out how to host it in Kubernetes and saved myself a lot of pain. But the bigger issue was that I didn’t want to fight Kubernetes every time just to spin something up. With all the GitOps workflows, secret management, Helm charts, and the many Kustomize files required, this side of the homelab felt like more overhead than I wanted.
+
+### Separating My Concerns
+So all this Affine stuff made me realize I needed to split up my homelab to address the two very different projects:
+1. **A small-scale enterprise style data lakehouse and analytics environment** where I can sandbox data engineering tools. I have a lot of energy for kubernetes configs when it comes to this!
+2. **A stable self-hosted app box** (media server, home assistant, etc.) to cut down on subscriptions and experiment with digital sovereignty. I want this to just work and I don't want to to spend much time configuring it at all. 
+
+So I split up the hardware, one miniPC will be the Proxmox box and the other will run kubernetes on Ubuntu Server. I needed to get a little router for the Proxmox machine as it doesn't work great over WiFi, so now I have a separate subnet for it. It's a bit kludgy, but it does work, and spinning up home assistant took 5 minutes, so I am very happy.  
+
+As for the Raspberry Pi—it’s currently out of the picture. Maybe one day I’ll set it up for something, but for now it’s unused hardware.
+
+### Looking forward
+I have a lot of hardware investments I want to think about. Finding a storage solution that will support my media server, but also will not bottleneck my lakehouse has been an interesting problem to mull over. 
+
+Also I still have a lot of work to do on the lakehouse it is hardly functioning!

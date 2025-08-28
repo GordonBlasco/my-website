@@ -59,49 +59,49 @@ const topics = Array.from(
         font-weight: bold;
       }
       ul.posts {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-      }
-      ul.posts li {
-        border-radius: 12px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-        transition:
-          transform 0.2s ease,
-          box-shadow 0.2s ease;
-        overflow: hidden;
-      }
-      ul.posts li:hover {
-        transform: translateX(4px);
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
-      }
-      ul.posts li a {
-        text-decoration: none;
-        color: inherit;
-        display: grid;
-        grid-template-columns: 150px 1fr;
-        gap: 1.5rem;
-        align-items: center;
-        padding: 1rem;
-      }
-      ul.posts li img {
-        width: 150px;
-        height: 84px;
-        object-fit: cover;
-        border-radius: 8px;
-      }
-      .title {
-        font-size: 1.25em;
-        margin: 0 0 0.25rem 0;
-        color: var(--text-main);
-      }
-      .date {
-        font-size: 0.9em;
-        color: var(--text-muted);
-      }
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+ul.posts li {
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+ul.posts li:hover {
+  background-color: var(--background-1);
+  transform: translateX(3px);
+}
+
+a.card-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  text-decoration: none;
+  color: inherit; /* inherits var(--text-main) from body */
+}
+
+.title {
+  margin: 0;
+  font-family: inherit; /* inherits "Literata" */
+  font-size: inherit;   /* will use global h4 size (1.563em) */
+  color: var(--text-main);
+  font-weight: 500;
+}
+
+.date {
+  margin: 0;
+  font-size: 0.9em;     /* slight adjustment for hierarchy */
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
     </style>
   </head>
   <body>
@@ -125,29 +125,19 @@ const topics = Array.from(
 
       <section>
         <ul class="posts">
-          {
-            allPosts.map((post) => (
-              <li data-topics={(post.data.topics ?? []).join(",")}>
-                <a href={`/blog/${post.id}/`}>
-                  {post.data.heroImage && (
-                    <Image
-                      width={720}
-                      height={360}
-                      src={post.data.heroImage}
-                      alt=""
-                    />
-                  )}
-                  <div>
-                    <h4 class="title">{post.data.title}</h4>
-                    <p class="date">
-                      <FormattedDate date={post.data.pubDate} />
-                    </p>
-                  </div>
-                </a>
-              </li>
-            ))
-          }
-        </ul>
+  {
+    allPosts.map((post) => (
+      <li data-topics={(post.data.topics ?? []).join(",")}>
+        <a href={`/blog/${post.id}/`} class="card-row">
+          <h4 class="title">{post.data.title}</h4>
+          <p class="date">
+            <FormattedDate date={post.data.pubDate} />
+          </p>
+        </a>
+      </li>
+    ))
+  }
+</ul>
       </section>
     </main>
     <Footer />
