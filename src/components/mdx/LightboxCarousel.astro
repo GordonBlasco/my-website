@@ -53,17 +53,17 @@ const { images } = Astro.props;
 
 <style>
   .lightbox-carousel {
-    overflow-x: auto;
-    padding-bottom: 1rem;
+    margin: 2rem 0;
   }
 
   .carousel-track {
-    display: flex;
-    gap: 1rem;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.35rem;
   }
 
   .lightbox-trigger {
-    flex: 0 0 300px;
+    min-width: 0;
     padding: 0;
     border: 0;
     background: transparent;
@@ -72,14 +72,21 @@ const { images } = Astro.props;
 
   .lightbox-trigger img {
     width: 100%;
-    height: 200px;
-    object-fit: contain;
+    height: clamp(110px, 18vw, 165px);
+    object-fit: cover;
+  }
+
+  .lightbox-trigger:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
   }
 
   .lightbox-dialog {
-    max-width: min(90vw, 1100px);
+    width: fit-content;
+    max-width: 90vw;
     max-height: 90vh;
-    padding: 2.5rem 1rem 1rem;
+    padding: 0.5rem;
+    overflow: hidden;
     border: 1px solid var(--border);
     background: var(--surface);
     color: var(--text);
@@ -90,21 +97,42 @@ const { images } = Astro.props;
   }
 
   .lightbox-dialog img {
-    max-width: 100%;
-    max-height: calc(90vh - 3.5rem);
+    width: auto;
+    height: auto;
+    max-width: calc(90vw - 1rem);
+    max-height: calc(90vh - 1rem);
     object-fit: contain;
   }
 
   .lightbox-close {
     position: absolute;
-    top: 0.25rem;
-    right: 0.5rem;
-    padding: 0.1rem 0.4rem;
-    border: 0;
+    top: 0.75rem;
+    right: 0.75rem;
+    width: 1.8rem;
+    height: 1.8rem;
+    padding: 0;
+    border: 1px solid var(--border);
+    border-radius: 50%;
     color: inherit;
-    background: transparent;
+    background: var(--surface);
     font: inherit;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
+    line-height: 1;
     cursor: pointer;
+  }
+
+  .lightbox-close:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  @media (max-width: 520px) {
+    .carousel-track {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .lightbox-trigger img {
+      height: 120px;
+    }
   }
 </style>

@@ -28,7 +28,15 @@
   padding: 0.6rem 0;
   gap: 1.5rem;
 }
-.post-list a { color: var(--text); font-size: 1.08rem; }
+.post-list a {
+  color: var(--text);
+  font-size: 1.08rem;
+  text-decoration: none;
+}
+.post-list a:hover,
+.post-list a:focus-visible {
+  text-decoration: underline;
+}
 .post-list time {
   color: var(--muted);
   font-family: var(--font-ui);
