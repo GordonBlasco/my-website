@@ -1,0 +1,32 @@
+---
+import type { CollectionEntry } from "astro:content";
+import SiteLayout from "./SiteLayout.astro";
+import FormattedDate from "../components/layouts/FormattedDate.astro";
+import { SITE_DESCRIPTION } from "../consts";
+
+type BlogData = CollectionEntry<"blog">["data"];
+type FieldNoteData = CollectionEntry<"fieldNotes">["data"];
+type Props = BlogData | FieldNoteData;
+
+const { title, pubDate, updatedDate } = Astro.props;
+---
+
+<SiteLayout title={title} description={SITE_DESCRIPTION}>
+  <main class="article-main">
+    <article class="prose">
+      <header class="article-title">
+        <h1>{title}</h1>
+        <hr />
+        <div class="article-date"><FormattedDate date={pubDate} /></div>
+        {
+          updatedDate && (
+            <div class="last-updated-on">
+              Last updated on <FormattedDate date={updatedDate} />
+            </div>
+          )
+        }
+      </header>
+      <slot />
+    </article>
+  </main>
+</SiteLayout>

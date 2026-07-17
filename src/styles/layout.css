@@ -5,6 +5,7 @@ body {
 
 .site-header {
   border-bottom: 1px solid var(--border);
+  background: var(--background);
   font-family: var(--font-ui);
 }
 
@@ -84,6 +85,7 @@ footer {
   margin-top: auto;
   border-top: 1px solid var(--border);
   color: var(--muted);
+  background: var(--background);
   font-family: var(--font-ui);
   font-size: 0.8rem;
 }

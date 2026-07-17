@@ -21,22 +21,14 @@
   margin: 0;
   padding: 0;
   list-style: none;
-  border-top: 1px solid var(--border);
 }
 .post-list li {
   display: grid;
   grid-template-columns: 1fr auto;
-  padding: 1rem 0;
-  border-bottom: 1px solid var(--border);
+  padding: 0.6rem 0;
   gap: 1.5rem;
 }
 .post-list a { color: var(--text); font-size: 1.08rem; }
-.post-list p {
-  margin: 0.25rem 0 0;
-  color: var(--muted);
-  font-size: 0.9rem;
-  line-height: 1.45;
-}
 .post-list time {
   color: var(--muted);
   font-family: var(--font-ui);

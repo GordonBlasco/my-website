@@ -5,9 +5,15 @@
   padding: 0;
 }
 .prose {
+  --content-start: 4rem;
   width: min(var(--content-width), calc(100% - (2 * var(--page-gutter))));
   margin: 0 auto;
-  padding: 3rem 0 5rem;
+  padding: var(--content-start) 0 var(--content-end);
+  background: linear-gradient(
+    to bottom,
+    transparent 0 var(--content-start),
+    var(--background) var(--content-start)
+  );
 }
 .article-title { margin-bottom: 2rem; }
 .article-title h1 { margin-bottom: 0.5rem; }
@@ -42,3 +48,7 @@
 .screenshot-hugo { max-width: 676px; }
 .screenshot-homepage { max-width: 551px; }
 .screenshot-blog { max-width: 486px; }
+
+@media (max-width: 600px) {
+  .prose { --content-start: 2.75rem; }
+}

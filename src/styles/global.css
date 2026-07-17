@@ -18,6 +18,8 @@ body {
   margin: 0;
   color: var(--text);
   background: var(--background);
+  background-image: radial-gradient(circle, var(--background-dot) 1px, transparent 1px);
+  background-size: 24px 24px;
   font-family: var(--font-body);
   font-size: var(--font-size-body);
   line-height: 1.65;
@@ -25,9 +27,18 @@ body {
 }
 
 main {
-  width: min(var(--content-width), calc(100% - 2.5rem));
+  --content-start: 4rem;
+  width: min(var(--content-width), calc(100% - (2 * var(--page-gutter))));
   margin: 0 auto;
-  padding: 4rem 0 5rem;
+  padding: var(--content-start) 0 var(--content-end);
+}
+
+main:not(.article-main) {
+  background: linear-gradient(
+    to bottom,
+    transparent 0 var(--content-start),
+    var(--background) var(--content-start)
+  );
 }
 
 h1,
@@ -45,11 +56,11 @@ h6 {
 
 h1 {
   margin-top: 0;
-  font-size: clamp(2rem, 5vw, 2.6rem);
+  font-size: var(--font-size-h1);
 }
 
-h2 { font-size: 1.45rem; }
-h3 { font-size: 1.15rem; }
+h2 { font-size: var(--font-size-h2); }
+h3 { font-size: var(--font-size-h3); }
 h4, h5, h6 { font-size: 1rem; }
 
 p,
@@ -132,5 +143,5 @@ pre code {
 
 @media (max-width: 600px) {
   body { font-size: 1rem; }
-  main { padding-top: 2.75rem; }
+  main { --content-start: 2.75rem; }
 }

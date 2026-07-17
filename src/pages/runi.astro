@@ -1,13 +1,12 @@
 ---
-import Layout from "../layouts/BlogPost.astro";
+import ArticleLayout from "../layouts/ArticleLayout.astro";
 import AboutHeroImage from "../assets/blog-placeholder-about.jpg";
 import Polaroid from "../components/mdx/Poloroid.astro";
 import blogPlaceholder from "../assets/baby_runi.JPEG";
 ---
 
-<Layout
+<ArticleLayout
   title="Runi Instructions"
-  description="about me page - out of date"
   pubDate={new Date("July 14 2025")}
 >
 <div class="float-polaroid">
@@ -43,4 +42,4 @@ THANK YOU! Hope you and Runi have fun together!
 <h1>Runi Facts</h1>
 <p>Runi is a rescue from South Korea and is just a little baby.</p>
   
-</Layout>
+</ArticleLayout>

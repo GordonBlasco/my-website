@@ -1,8 +1,6 @@
 ---
 import { getCollection } from "astro:content";
-import BaseHead from "../components/layouts/BaseHead.astro";
-import Navbar from "../components/layouts/navbar/Navbar.astro";
-import Footer from "../components/layouts/Footer.astro";
+import SiteLayout from "../layouts/SiteLayout.astro";
 import FormattedDate from "../components/layouts/FormattedDate.astro";
 import Polaroid from "../components/mdx/Poloroid.astro";
 import runiPhoto from "../assets/baby_runi.JPEG";
@@ -13,13 +11,7 @@ const posts = (await getCollection("blog"))
   .slice(0, 5);
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-  </head>
-  <body>
-    <Navbar />
+<SiteLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
     <main>
       <section class="intro">
         <div class="intro-copy">
@@ -57,6 +49,4 @@ const posts = (await getCollection("blog"))
         </ol>
       </section>
     </main>
-    <Footer />
-  </body>
-</html>
+</SiteLayout>
