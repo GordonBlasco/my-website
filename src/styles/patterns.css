@@ -1,0 +1,100 @@
+.page-heading { margin-bottom: 3rem; }
+.page-heading h1 { margin-bottom: 0.75rem; }
+.page-heading p {
+  max-width: 34rem;
+  margin-bottom: 0;
+  color: var(--muted);
+}
+
+.section-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+  gap: 1rem;
+  font-family: var(--font-ui);
+}
+.section-heading h2 { margin: 0; }
+.section-heading a { font-size: 0.85rem; }
+
+.post-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--border);
+}
+.post-list li {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border);
+  gap: 1.5rem;
+}
+.post-list a { color: var(--text); font-size: 1.08rem; }
+.post-list p {
+  margin: 0.25rem 0 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+.post-list time {
+  color: var(--muted);
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+.intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 220px;
+  align-items: start;
+  gap: 1.5rem;
+  margin-bottom: 4.5rem;
+}
+.intro figure.polaroid { width: 210px; margin: 0; }
+.intro-copy h2 { margin-top: 0; }
+.lede { max-width: 36rem; color: var(--muted); font-size: 1.2rem; }
+
+.publication-groups .section-label {
+  margin: 2rem 0 0.5rem;
+  color: var(--text);
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.publication-groups .section-label:first-child { margin-top: 0; }
+.publication { padding: 1rem 0; border-top: 1px solid var(--border); }
+.publication h3 {
+  margin: 0 0 0.25rem;
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.4;
+}
+.publication h3 a { color: var(--text); }
+.publication .authors {
+  margin: 0 0 0.35rem;
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+.publication-meta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  color: var(--muted);
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  gap: 1rem;
+}
+.publication-meta .links { display: flex; flex-shrink: 0; gap: 0.75rem; }
+
+@media (max-width: 520px) {
+  .post-list li { grid-template-columns: 1fr; gap: 0.35rem; }
+  .intro { grid-template-columns: 1fr; gap: 1.5rem; }
+  .intro .polaroid { justify-self: center; }
+  .publication-meta { align-items: flex-start; flex-direction: column; gap: 0.3rem; }
+}

@@ -6,32 +6,54 @@ export interface Props {
 const { images } = Astro.props;
 ---
 
-<link
-  href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css"
-  rel="stylesheet"
-/>
-
 <div class="lightbox-carousel">
   <div class="carousel-track">
-    {images.map((img, i) => (
-      <a href={img.src} class="glightbox" data-gallery="fieldphotos">
-        <img src={img.src} alt={img.alt || `Image ${i + 1}`} loading="lazy" />
-      </a>
-    ))}
+    {
+      images.map((image, index) => (
+        <button
+          class="lightbox-trigger"
+          type="button"
+          data-src={image.src}
+          data-alt={image.alt || `Image ${index + 1}`}
+          aria-label={`Enlarge ${image.alt || `image ${index + 1}`}`}
+        >
+          <img src={image.src} alt={image.alt || `Image ${index + 1}`} loading="lazy" />
+        </button>
+      ))
+    }
   </div>
+
+  <dialog class="lightbox-dialog" aria-label="Image preview">
+    <button class="lightbox-close" type="button" aria-label="Close image preview">×</button>
+    <img src="" alt="" />
+  </dialog>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    GLightbox({ selector: '.glightbox' });
+  document.querySelectorAll<HTMLElement>(".lightbox-carousel").forEach((carousel) => {
+    const dialog = carousel.querySelector<HTMLDialogElement>(".lightbox-dialog");
+    const preview = dialog?.querySelector<HTMLImageElement>("img");
+    const close = dialog?.querySelector<HTMLButtonElement>(".lightbox-close");
+
+    carousel.querySelectorAll<HTMLButtonElement>(".lightbox-trigger").forEach((trigger) => {
+      trigger.addEventListener("click", () => {
+        if (!dialog || !preview) return;
+        preview.src = trigger.dataset.src ?? "";
+        preview.alt = trigger.dataset.alt ?? "";
+        dialog.showModal();
+      });
+    });
+
+    close?.addEventListener("click", () => dialog?.close());
+    dialog?.addEventListener("click", (event) => {
+      if (event.target === dialog) dialog.close();
+    });
   });
 </script>
 
 <style>
   .lightbox-carousel {
     overflow-x: auto;
-    white-space: nowrap;
     padding-bottom: 1rem;
   }
 
@@ -40,23 +62,49 @@ const { images } = Astro.props;
     gap: 1rem;
   }
 
-  .carousel-track a {
-    flex: 0 0 auto;
-    display: block;
-    max-width: 300px;
+  .lightbox-trigger {
+    flex: 0 0 300px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: zoom-in;
   }
 
-  .carousel-track img {
+  .lightbox-trigger img {
     width: 100%;
     height: 200px;
     object-fit: contain;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-    cursor: zoom-in;
-    transition: transform 0.2s ease;
   }
 
-  .carousel-track img:hover {
-    transform: scale(1.03);
+  .lightbox-dialog {
+    max-width: min(90vw, 1100px);
+    max-height: 90vh;
+    padding: 2.5rem 1rem 1rem;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+  }
+
+  .lightbox-dialog::backdrop {
+    background: rgb(0 0 0 / 75%);
+  }
+
+  .lightbox-dialog img {
+    max-width: 100%;
+    max-height: calc(90vh - 3.5rem);
+    object-fit: contain;
+  }
+
+  .lightbox-close {
+    position: absolute;
+    top: 0.25rem;
+    right: 0.5rem;
+    padding: 0.1rem 0.4rem;
+    border: 0;
+    color: inherit;
+    background: transparent;
+    font: inherit;
+    font-size: 1.5rem;
+    cursor: pointer;
   }
 </style>

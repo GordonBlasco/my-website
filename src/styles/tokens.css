@@ -1,0 +1,79 @@
+:root {
+  color-scheme: dark;
+
+  /* Everforest Dark is the fallback when no system preference is available. */
+  --background: #202629;
+  --surface: #293136;
+  --text: #e6dfcc;
+  --muted: #b7c0b3;
+  --accent: #b7d28d;
+  --border: #566269;
+  --code-background: #303a3f;
+  --polaroid-shadow-near: #11171a;
+  --polaroid-shadow-mid: #182024;
+  --polaroid-shadow-far: #0c1113;
+
+  /* Typography */
+  --font-body: Georgia, "Times New Roman", serif;
+  --font-ui: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-size-body: 1.125rem;
+  --font-size-h1: clamp(2rem, 5vw, 2.6rem);
+  --font-size-h2: 1.45rem;
+  --font-size-h3: 1.15rem;
+
+  /* Layout and spacing */
+  --content-width: 680px;
+  --page-gutter: 1.25rem;
+  --space-xs: 0.35rem;
+  --space-s: 0.75rem;
+  --space-m: 1rem;
+  --space-l: 1.5rem;
+  --space-xl: 2.5rem;
+  --space-2xl: 4rem;
+
+}
+
+/* Follow the operating system until the visitor makes an explicit choice. */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) {
+    color-scheme: light;
+    --background: #f2efdf;
+    --surface: #fffbef;
+    --text: #5c6a72;
+    --muted: #829181;
+    --accent: #8da101;
+    --border: #d8d5c5;
+    --code-background: #e8e5d5;
+    --polaroid-shadow-near: #000;
+    --polaroid-shadow-mid: #555;
+    --polaroid-shadow-far: #999;
+  }
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --background: #f2efdf;
+  --surface: #fffbef;
+  --text: #5c6a72;
+  --muted: #829181;
+  --accent: #8da101;
+  --border: #d8d5c5;
+  --code-background: #e8e5d5;
+  --polaroid-shadow-near: #000;
+  --polaroid-shadow-mid: #555;
+  --polaroid-shadow-far: #999;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --background: #202629;
+  --surface: #293136;
+  --text: #e6dfcc;
+  --muted: #b7c0b3;
+  --accent: #b7d28d;
+  --border: #566269;
+  --code-background: #303a3f;
+  --polaroid-shadow-near: #11171a;
+  --polaroid-shadow-mid: #182024;
+  --polaroid-shadow-far: #0c1113;
+}

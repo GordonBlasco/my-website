@@ -18,7 +18,7 @@ const blog = defineCollection({
 });
 
 const fieldNotes = defineCollection({
-  // Load Markdown and MDX files in the `src/content/field-notes/` directory.
+  // Load Field Notes Markdown and MDX files from `src/content/fieldNotes/`.
   loader: glob({ base: "./src/content/fieldNotes", pattern: "**/*.{md,mdx}" }),
   // Type-check frontmatter using a schema
   schema: ({ image }) =>

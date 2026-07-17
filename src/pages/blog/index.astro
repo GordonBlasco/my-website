@@ -1,170 +1,31 @@
 ---
-import BaseHead from "../../components/layouts/BaseHead.astro";
-import Navbar from "../../components/layouts/navbar/Navbar.astro"; // <- updated import
-import Footer from "../../components/layouts/Footer.astro";
-import { SITE_TITLE, SITE_DESCRIPTION } from "../../consts";
 import { getCollection } from "astro:content";
+import PageLayout from "../../layouts/PageLayout.astro";
 import FormattedDate from "../../components/layouts/FormattedDate.astro";
-import { Image } from "astro:assets";
 
-const allPosts = (await getCollection("blog")).sort(
+const posts = (await getCollection("blog")).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
-
-const topics = Array.from(
-  new Set(allPosts.flatMap((post) => post.data.topics ?? [])),
-).sort();
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-    <style>
-      body {
-        display: flex;
-        flex-direction: column;
-        margin: 0;
-        padding: 0;
-        height: 100%;
-        min-height: 100vh;
-      }
-      main {
-        display: grid;
-        grid-template-columns: 200px 1fr;
-        gap: 2rem;
-        width: 100%;
-        max-width: 960px;
-        margin: 2rem auto;
-        flex: 1;
-      }
-      .sidebar {
-        padding: 1rem;
-        border-right: 1px solid #ccc;
-      }
-      .sidebar ul {
-        padding: 0;
-        list-style: none;
-      }
-      .sidebar li {
-        margin-bottom: 0.5rem;
-      }
-      .sidebar a {
-        color: inherit;
-        text-decoration: none;
-        cursor: pointer;
-      }
-      .sidebar a.active {
-        color: var(--accent);
-        font-weight: bold;
-      }
-      ul.posts {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-ul.posts li {
-  border-radius: 8px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
-  transition: background-color 0.2s ease, transform 0.2s ease;
-}
-
-ul.posts li:hover {
-  background-color: var(--background-1);
-  transform: translateX(3px);
-}
-
-a.card-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.75rem 1rem;
-  text-decoration: none;
-  color: inherit; /* inherits var(--text-main) from body */
-}
-
-.title {
-  margin: 0;
-  font-family: inherit; /* inherits "Literata" */
-  font-size: inherit;   /* will use global h4 size (1.563em) */
-  color: var(--text-main);
-  font-weight: 500;
-}
-
-.date {
-  margin: 0;
-  font-size: 0.9em;     /* slight adjustment for hierarchy */
-  color: var(--text-muted);
-  white-space: nowrap;
-}
-
-    </style>
-  </head>
-  <body>
-    <Navbar />
-    <main>
-      <aside class="sidebar">
-        <h3>Topics</h3>
-        <ul>
-          <li><a href="#" class="active" data-topic="">All</a></li>
-          {
-            topics.map((topic) => (
-              <li>
-                <a href="#" data-topic={topic}>
-                  {topic}
-                </a>
-              </li>
-            ))
-          }
-        </ul>
-      </aside>
-
-      <section>
-        <ul class="posts">
-  {
-    allPosts.map((post) => (
-      <li data-topics={(post.data.topics ?? []).join(",")}>
-        <a href={`/blog/${post.id}/`} class="card-row">
-          <h4 class="title">{post.data.title}</h4>
-          <p class="date">
-            <FormattedDate date={post.data.pubDate} />
-          </p>
-        </a>
-      </li>
-    ))
-  }
-</ul>
-      </section>
-    </main>
-    <Footer />
-
-    <script>
-      document.querySelectorAll(".sidebar a").forEach((link) => {
-        link.addEventListener("click", (e) => {
-          e.preventDefault();
-          const selected = link.dataset.topic;
-
-          // Update active class
-          document
-            .querySelectorAll(".sidebar a")
-            .forEach((l) => l.classList.remove("active"));
-          link.classList.add("active");
-
-          // Filter posts
-          document.querySelectorAll("ul.posts li").forEach((post) => {
-            const topics = post.dataset.topics.split(",");
-            if (!selected || topics.includes(selected)) {
-              post.style.display = "";
-            } else {
-              post.style.display = "none";
-            }
-          });
-        });
-      });
-    </script>
-  </body>
-</html>
+<PageLayout
+  title="Blog"
+  description="Blog posts about data systems, self-hosting, and computer science."
+  intro="Essays and project notes on data systems, self-hosting, and computer science."
+>
+      <ol class="post-list">
+        {
+          posts.map((post) => (
+            <li>
+              <div>
+                <a href={`/blog/${post.id}/`}>{post.data.title}</a>
+                <p>{post.data.description}</p>
+              </div>
+              <time datetime={post.data.pubDate.toISOString()}>
+                <FormattedDate date={post.data.pubDate} />
+              </time>
+            </li>
+          ))
+        }
+      </ol>
+</PageLayout>

@@ -2,20 +2,20 @@
 import { defineConfig } from "astro/config";
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
-import netlify from "@astrojs/netlify";
-import icon from "astro-icon";
 
 // https://astro.build/config
 export default defineConfig({
   site: "https://example.com",
+  build: {
+    inlineStylesheets: "never",
+  },
+  vite: {
+    build: {
+      assetsInlineLimit: 0,
+    },
+  },
   integrations: [
     mdx(),
     sitemap(),
-    icon({
-      include: {
-        heroicons: ["*"],
-      },
-    }),
   ],
-  adapter: netlify(),
 });
