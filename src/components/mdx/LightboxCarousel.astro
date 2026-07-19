@@ -49,7 +49,9 @@ const optimizedImages = await Promise.all(
 
   <dialog class="lightbox-dialog" aria-label="Image preview">
     <button class="lightbox-close" type="button" aria-label="Close image preview">×</button>
-    <img src="" alt="" />
+    <button class="lightbox-nav lightbox-previous" type="button" aria-label="Previous image">‹</button>
+    <img src="" alt="" title="Click for next image" />
+    <button class="lightbox-nav lightbox-next" type="button" aria-label="Next image">›</button>
   </dialog>
 </div>
 
@@ -58,17 +60,46 @@ const optimizedImages = await Promise.all(
     const dialog = carousel.querySelector<HTMLDialogElement>(".lightbox-dialog");
     const preview = dialog?.querySelector<HTMLImageElement>("img");
     const close = dialog?.querySelector<HTMLButtonElement>(".lightbox-close");
+    const previous = dialog?.querySelector<HTMLButtonElement>(".lightbox-previous");
+    const next = dialog?.querySelector<HTMLButtonElement>(".lightbox-next");
+    const triggers = Array.from(
+      carousel.querySelectorAll<HTMLButtonElement>(".lightbox-trigger"),
+    );
+    let currentIndex = 0;
 
-    carousel.querySelectorAll<HTMLButtonElement>(".lightbox-trigger").forEach((trigger) => {
+    const showImage = (index: number) => {
+      if (!preview || triggers.length === 0) return;
+
+      currentIndex = (index + triggers.length) % triggers.length;
+      const trigger = triggers[currentIndex];
+      preview.src = trigger.dataset.src ?? "";
+      preview.alt = trigger.dataset.alt ?? "";
+    };
+
+    triggers.forEach((trigger, index) => {
       trigger.addEventListener("click", () => {
         if (!dialog || !preview) return;
-        preview.src = trigger.dataset.src ?? "";
-        preview.alt = trigger.dataset.alt ?? "";
+        showImage(index);
         dialog.showModal();
       });
     });
 
+    const showPrevious = () => showImage(currentIndex - 1);
+    const showNext = () => showImage(currentIndex + 1);
+
+    previous?.addEventListener("click", showPrevious);
+    next?.addEventListener("click", showNext);
+    preview?.addEventListener("click", showNext);
     close?.addEventListener("click", () => dialog?.close());
+    dialog?.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        showPrevious();
+      } else if (event.key === "ArrowRight") {
+        event.preventDefault();
+        showNext();
+      }
+    });
     dialog?.addEventListener("click", (event) => {
       if (event.target === dialog) dialog.close();
     });
@@ -126,6 +157,7 @@ const optimizedImages = await Promise.all(
     max-width: calc(90vw - 1rem);
     max-height: calc(90vh - 1rem);
     object-fit: contain;
+    cursor: e-resize;
   }
 
   .lightbox-close {
@@ -148,6 +180,34 @@ const optimizedImages = await Promise.all(
   .lightbox-close:focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 2px;
+  }
+
+  .lightbox-nav {
+    position: absolute;
+    top: 50%;
+    width: 2.5rem;
+    height: 3.5rem;
+    padding: 0;
+    transform: translateY(-50%);
+    border: 0;
+    color: inherit;
+    background: transparent;
+    font: inherit;
+    font-size: 2rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  .lightbox-previous {
+    left: 0.75rem;
+  }
+
+  .lightbox-next {
+    right: 0.75rem;
+  }
+
+  .lightbox-nav:focus-visible {
+    outline: none;
   }
 
   @media (max-width: 520px) {
