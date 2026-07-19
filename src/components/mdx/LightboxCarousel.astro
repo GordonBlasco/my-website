@@ -1,23 +1,47 @@
 ---
+import { getImage } from "astro:assets";
+import type { ImageMetadata } from "astro";
+
 export interface Props {
-  images: { src: string; alt?: string }[];
+  images: { src: ImageMetadata; alt?: string }[];
 }
 
 const { images } = Astro.props;
+
+const optimizedImages = await Promise.all(
+  images.map(async (image) => {
+    const thumbnailWidth = Math.min(480, image.src.width);
+    const lightboxWidth = Math.min(1200, image.src.width);
+
+    const [thumbnail, lightbox] = await Promise.all([
+      getImage({ src: image.src, width: thumbnailWidth, format: "webp", quality: 75 }),
+      getImage({ src: image.src, width: lightboxWidth, format: "webp", quality: 85 }),
+    ]);
+
+    return { ...image, thumbnail, lightbox };
+  }),
+);
 ---
 
 <div class="lightbox-carousel">
   <div class="carousel-track">
     {
-      images.map((image, index) => (
+      optimizedImages.map((image, index) => (
         <button
           class="lightbox-trigger"
           type="button"
-          data-src={image.src}
+          data-src={image.lightbox.src}
           data-alt={image.alt || `Image ${index + 1}`}
           aria-label={`Enlarge ${image.alt || `image ${index + 1}`}`}
         >
-          <img src={image.src} alt={image.alt || `Image ${index + 1}`} loading="lazy" />
+          <img
+            src={image.thumbnail.src}
+            width={image.thumbnail.attributes.width}
+            height={image.thumbnail.attributes.height}
+            alt={image.alt || `Image ${index + 1}`}
+            loading="lazy"
+            decoding="async"
+          />
         </button>
       ))
     }
