@@ -6,7 +6,10 @@ import Polaroid from "../components/mdx/Poloroid.astro";
 import runiPhoto from "../assets/baby_runi.JPEG";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 
-const posts = (await getCollection("blog"))
+const posts = (await getCollection(
+  "blog",
+  ({ data }) => !import.meta.env.PROD || !data.draft,
+))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
   .slice(0, 5);
 ---
