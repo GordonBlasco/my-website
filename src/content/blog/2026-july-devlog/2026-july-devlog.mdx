@@ -1,5 +1,5 @@
 ---
-title: "Murmur Engine Devlog: No Boids and Yak Shaving"
+title: "Devlog: Flocks in Odin, No Boids, and Yak Shaving"
 pubDate: "August 06 2026"
 type: "blog"
 topics: [hobby-code]
@@ -28,7 +28,7 @@ The GIF above is my first pass at using a soft body mesh/skeleton to define the 
 # Tooling needs
 Although I only use about 200 lines of Odin code to generate this first simulation, I have already begun yak shaving and building out some developer tools for this project. And in the short term this has actually been much much more fun, and I am learning some cool tricks. 
 
-First, is a GIF exporter in Odin. I want to be generating a lot more of these gifs like the one above and the way I did it for this post was just hell and the result is pretty ugly. So, I am going to look into creating a simple gif recording package in Odin so I can vendor it into the simulation. 
+First is a GIF exporter in Odin. I want to be generating a lot more of these gifs like the one above and the way I did it for this post was just hell and the result is pretty ugly. So, I am going to look into creating a simple gif recording package in Odin so I can vendor it into the simulation. 
 
-Second, is some telemetry and log file viewing. While this can be handled with `fmt.println()` in Odin, I think I have something better in mind. I am looking at making a TUI to function as a dashboard for logs/errors/telemetry. I would like to be able to monitor the number of draws and physics calculations and compare them to what boids would give me (beating something like `number of birds × nearby-neighbor checks` will be my goal).
+Second is some telemetry and log file viewing. While this can be handled with `fmt.println()` in Odin, I think I have something better in mind. I am looking at making a TUI to function as a dashboard for logs/errors/telemetry. I would like to be able to monitor the number of draws and physics calculations and compare them to what boids would give me (beating something like `number of birds × nearby-neighbor checks` will be my goal).
 
