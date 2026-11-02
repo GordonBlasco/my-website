@@ -6,11 +6,25 @@ import Polaroid from "../components/mdx/Poloroid.astro";
 import runiPhoto from "../assets/baby_runi.JPEG";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 
-const posts = (await getCollection(
-  "blog",
-  ({ data }) => !import.meta.env.PROD || !data.draft,
-))
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+const [blogPosts, libraryPosts] = await Promise.all([
+  getCollection("blog", ({ data }) => !import.meta.env.PROD || !data.draft),
+  getCollection("library", ({ data }) => !import.meta.env.PROD || !data.draft),
+]);
+
+const posts = [
+  ...blogPosts.map((post) => ({
+    ...post,
+    href: `/blog/${post.id}/`,
+    date: post.data.pubDate,
+  })),
+  ...libraryPosts.map((post) => ({
+    ...post,
+    href: `/library/${post.id}/`,
+    date: post.data.pubDate,
+  })),
+]
+  .filter((post): post is typeof post & { date: Date } => post.date !== undefined)
+  .sort((a, b) => b.date.valueOf() - a.date.valueOf())
   .slice(0, 5);
 ---
 
@@ -22,12 +36,9 @@ const posts = (await getCollection(
           <p class="lede">
           I am an environmental scientist turned data engineer.
           <br><br>
-          I have some blog posts describing my adventures in homelabbing, Georgia
-          Tech's Online Masters of Comp Science, also some photos of weird mushrooms.
-          Hope you enjoy.
-          
-        
-          
+          This site is more inspired by indie web principles and is not a 
+          professional website or portfolio. I will post more about my hobbies
+          and less about my profession. Some of that may sneak in though.  
           </p>
         </div>
         <Polaroid src={runiPhoto} alt="Runi as a puppy" caption="Baby Runi" />
@@ -42,9 +53,9 @@ const posts = (await getCollection(
           {
             posts.map((post) => (
               <li>
-                <a href={`/blog/${post.id}/`}>{post.data.title}</a>
-                <time datetime={post.data.pubDate.toISOString()}>
-                  <FormattedDate date={post.data.pubDate} />
+                <a href={post.href}>{post.data.title}</a>
+                <time datetime={post.date.toISOString()}>
+                  <FormattedDate date={post.date} />
                 </time>
               </li>
             ))

@@ -9,13 +9,14 @@ interface Props {
 }
 
 const { title, description, intro } = Astro.props;
+const introParagraphs = intro.split(/\n\s*\n/).filter(Boolean);
 ---
 
 <SiteLayout title={`${title} · ${SITE_TITLE}`} description={description}>
   <main>
     <header class="page-heading">
       <h1>{title}</h1>
-      <p>{intro}</p>
+      {introParagraphs.map((paragraph) => <p>{paragraph}</p>)}
     </header>
     <slot />
   </main>
