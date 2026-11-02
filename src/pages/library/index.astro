@@ -1,0 +1,151 @@
+---
+import { getCollection, type CollectionEntry } from "astro:content";
+import { Image } from "astro:assets";
+import PageLayout from "../../layouts/PageLayout.astro";
+import FormattedDate from "../../components/layouts/FormattedDate.astro";
+
+const lastRead = (finishedDates: Date[]) =>
+  finishedDates.length > 0
+    ? new Date(Math.max(...finishedDates.map((date) => date.valueOf())))
+    : undefined;
+
+const sortDate = (post: CollectionEntry<"library">) =>
+  lastRead(post.data.finishedDates)?.valueOf() ?? post.data.pubDate?.valueOf() ?? 0;
+
+const posts = (
+  await getCollection("library", ({ data }) => !import.meta.env.PROD || !data.draft)
+).sort((a, b) => sortDate(b) - sortDate(a));
+---
+
+<PageLayout
+  title="Library"
+  description="Books I've read, with notes and reviews."
+  intro={"Some scattered notes and reviews on books."}
+>
+  <div class="library-toolbar" hidden={posts.length === 0}>
+    <span>View</span>
+    <div class="view-toggle" role="group" aria-label="Library view">
+      <button type="button" data-view="grid" aria-pressed="true">Covers</button>
+      <button type="button" data-view="list" aria-pressed="false">List</button>
+    </div>
+  </div>
+
+  {
+    posts.length > 0 ? (
+      <ol class="library-posts" data-view="grid">
+        {posts.map((post) => (
+          <li>
+            <a class="book-cover" href={`/library/${post.id}/`} tabindex="-1" aria-hidden="true">
+              <Image
+                src={post.data.cover}
+                alt=""
+                widths={[180, 280, 420]}
+                sizes="(max-width: 520px) 42vw, 200px"
+              />
+            </a>
+            <div class="book-details">
+              <a class="book-title" href={`/library/${post.id}/`}>{post.data.title}</a>
+              {lastRead(post.data.finishedDates) && (
+                <time datetime={lastRead(post.data.finishedDates)?.toISOString()}>
+                  Last read <FormattedDate date={lastRead(post.data.finishedDates)!} />
+                </time>
+              )}
+            </div>
+          </li>
+        ))}
+      </ol>
+    ) : (
+      <p class="empty-library">No books here yet.</p>
+    )
+  }
+</PageLayout>
+
+<script>
+  const library = document.querySelector<HTMLOListElement>(".library-posts");
+  const buttons = document.querySelectorAll<HTMLButtonElement>("[data-view]");
+
+  const setView = (view: "grid" | "list") => {
+    if (!library) return;
+    library.dataset.view = view;
+    buttons.forEach((button) =>
+      button.setAttribute("aria-pressed", String(button.dataset.view === view)),
+    );
+  };
+
+  buttons.forEach((button) => {
+    button.addEventListener("click", () => setView(button.dataset.view as "grid" | "list"));
+  });
+</script>
+
+<style>
+  :global(main:not(.article-main)) {
+    --content-width: 880px;
+  }
+
+  .library-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-bottom: 1.5rem;
+    gap: 0.65rem;
+    color: var(--muted);
+    font-family: var(--font-ui);
+    font-size: 0.8rem;
+  }
+
+  .view-toggle { display: flex; }
+  .view-toggle button {
+    padding: 0.35rem 0.65rem;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    background: var(--background);
+    font: inherit;
+    cursor: pointer;
+  }
+  .view-toggle button + button { border-left: 0; }
+  .view-toggle button[aria-pressed="true"] { color: var(--text); background: var(--code-background); }
+  .view-toggle button:focus-visible { position: relative; outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .library-posts { margin: 0; padding: 0; list-style: none; }
+  .library-posts[data-view="grid"] {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
+    align-items: start;
+    gap: 2.25rem 1.5rem;
+  }
+  .library-posts[data-view="grid"] .book-cover {
+    display: block;
+    aspect-ratio: 2 / 3;
+    margin-bottom: 0.75rem;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: var(--code-background);
+    box-shadow: 0.25rem 0.35rem 0.75rem rgb(0 0 0 / 15%);
+  }
+  .library-posts[data-view="grid"] .book-cover img { width: 100%; height: 100%; object-fit: cover; }
+  .book-title { color: var(--text); font-size: 1rem; font-weight: 700; text-decoration: none; line-height: 1.3; }
+  .book-title:hover, .book-title:focus-visible { text-decoration: underline; }
+  .book-details time { display: block; margin-top: 0.25rem; color: var(--muted); font-family: var(--font-ui); font-size: 0.75rem; }
+
+  .library-posts[data-view="list"] li {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    padding: 0.6rem 0;
+    gap: 1.5rem;
+  }
+  .library-posts[data-view="list"] .book-cover { display: none; }
+  .library-posts[data-view="list"] .book-details { display: contents; }
+  .library-posts[data-view="list"] .book-title { font-family: var(--font-body); font-size: 1.08rem; font-weight: 400; }
+  .library-posts[data-view="list"] time { margin: 0; white-space: nowrap; }
+  .empty-library { color: var(--muted); }
+
+  @media (min-width: 1120px) {
+    :global(main:not(.article-main)) { --content-width: 1040px; }
+    .library-posts[data-view="grid"] { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  }
+
+  @media (max-width: 520px) {
+    .library-posts[data-view="grid"] { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.75rem 1rem; }
+    .library-posts[data-view="list"] li { grid-template-columns: 1fr; gap: 0.25rem; }
+  }
+</style>

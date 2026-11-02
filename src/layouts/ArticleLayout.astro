@@ -3,12 +3,20 @@ import type { CollectionEntry } from "astro:content";
 import SiteLayout from "./SiteLayout.astro";
 import FormattedDate from "../components/layouts/FormattedDate.astro";
 import { SITE_DESCRIPTION } from "../consts";
+import { Image } from "astro:assets";
 
 type BlogData = CollectionEntry<"blog">["data"];
-type FieldNoteData = CollectionEntry<"fieldNotes">["data"];
-type Props = BlogData | FieldNoteData;
+type LibraryData = CollectionEntry<"library">["data"];
+type Props = BlogData | LibraryData;
 
 const { title, pubDate, updatedDate } = Astro.props;
+const cover = "cover" in Astro.props ? Astro.props.cover : undefined;
+const publicationDate = "publicationDate" in Astro.props ? Astro.props.publicationDate : undefined;
+const authors = "authors" in Astro.props ? Astro.props.authors : undefined;
+const finishedDates = "finishedDates" in Astro.props ? Astro.props.finishedDates : undefined;
+const lastRead = finishedDates && finishedDates.length > 0
+  ? new Date(Math.max(...finishedDates.map((date) => date.valueOf())))
+  : undefined;
 ---
 
 <SiteLayout title={title} description={SITE_DESCRIPTION}>
@@ -17,7 +25,21 @@ const { title, pubDate, updatedDate } = Astro.props;
       <header class="article-title">
         <h1>{title}</h1>
         <hr />
-        <div class="article-date"><FormattedDate date={pubDate} /></div>
+        {pubDate && <div class="article-date"><FormattedDate date={pubDate} /></div>}
+        {
+          authors && publicationDate && (
+            <div class="publication-date">
+              {authors.join(" and ")}
+            </div>
+          )
+        }
+        {
+          lastRead && (
+            <div class="last-read-on">
+              Last read on <FormattedDate date={lastRead} />
+            </div>
+          )
+        }
         {
           updatedDate && (
             <div class="last-updated-on">
@@ -26,6 +48,17 @@ const { title, pubDate, updatedDate } = Astro.props;
           )
         }
       </header>
+      {
+        cover && (
+          <Image
+            class="article-cover"
+            src={cover}
+            alt={`Cover of ${title}`}
+            widths={[240, 360, 480]}
+            sizes="(max-width: 600px) 180px, 240px"
+          />
+        )
+      }
       <slot />
     </article>
   </main>

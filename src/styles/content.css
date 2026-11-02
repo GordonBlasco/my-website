@@ -19,11 +19,13 @@
 .article-title h1 { margin-bottom: 0.5rem; }
 .article-title hr { margin: 1rem 0; }
 .article-date,
+.last-read-on,
 .last-updated-on {
   color: var(--muted);
   font-family: var(--font-ui);
   font-size: 0.85rem;
 }
+.last-read-on,
 .last-updated-on { font-style: italic; }
 .hero-image { width: 100%; }
 .hero-image img { margin: 0 auto; }
@@ -51,4 +53,10 @@
 
 @media (max-width: 600px) {
   .prose { --content-start: 2.75rem; }
+}
+.article-cover {
+  width: min(15rem, 55%);
+  margin: 0 auto 2.5rem;
+  border: 1px solid var(--border);
+  box-shadow: 0.35rem 0.45rem 1rem rgb(0 0 0 / 18%);
 }

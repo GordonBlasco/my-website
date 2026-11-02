@@ -4,13 +4,17 @@ import ArticleLayout from "../../layouts/ArticleLayout.astro";
 import { render } from "astro:content";
 
 export async function getStaticPaths() {
-  const posts = await getCollection("fieldNotes");
+  const posts = await getCollection(
+    "library",
+    ({ data }) => !import.meta.env.PROD || !data.draft,
+  );
   return posts.map((post) => ({
     params: { slug: post.id },
     props: post,
   }));
 }
-type Props = CollectionEntry<"fieldNotes">;
+
+type Props = CollectionEntry<"library">;
 
 const post = Astro.props;
 const { Content } = await render(post);
