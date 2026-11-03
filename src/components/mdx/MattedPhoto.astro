@@ -1,0 +1,59 @@
+---
+import { Image } from "astro:assets";
+
+const { src, alt = "", caption = "" } = Astro.props;
+---
+
+<figure class="matted-photo">
+  <div class="mat">
+    {
+      typeof src === "string" ? (
+        <img src={src} alt={alt} loading="lazy" decoding="async" />
+      ) : (
+        <Image
+          src={src}
+          alt={alt}
+          width={500}
+          widths={[250, 500]}
+          sizes="(max-width: 520px) 200px, 250px"
+          format="webp"
+          loading="eager"
+        />
+      )
+    }
+  </div>
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>
+
+<style>
+  /*
+   * A photo in a light mat with a typed caption beneath it. No clips, tape,
+   * or rotation: the print is mounted, not scattered on a desk.
+   */
+  .matted-photo {
+    display: flex;
+    flex-direction: column;
+    max-width: 250px;
+    margin: 1rem 0;
+    gap: 0.5rem;
+  }
+
+  .mat {
+    padding: 10px;
+    border-radius: 2px;
+    background: var(--mat);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .mat :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  figcaption {
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-meta);
+  }
+</style>

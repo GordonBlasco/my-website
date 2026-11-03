@@ -24,7 +24,16 @@ const { src, alt = "", caption = "" } = Astro.props;
 </figure>
 
 <style>
+  /*
+   * Not currently used by any page, kept on hand.
+   * The layered shadow used to read three global --polaroid-shadow-* tokens.
+   * Those retired with the Everforest palette, so the values live here now.
+   * Dark is the default and light is the opt-in, matching tokens.css.
+   */
   .polaroid {
+  --polaroid-shadow-near: #11171a;
+  --polaroid-shadow-mid: #182024;
+  --polaroid-shadow-far: #0c1113;
   background: #fffbef;
   color: #222;
   padding: 10px 10px 30px 10px;
@@ -41,6 +50,20 @@ const { src, alt = "", caption = "" } = Astro.props;
   font-family: var(--font-body);
   transition: transform 0.1s ease;
   transform: rotate(-1deg); /* subtle imperfection */
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) .polaroid {
+    --polaroid-shadow-near: #000;
+    --polaroid-shadow-mid: #555;
+    --polaroid-shadow-far: #999;
+  }
+}
+
+:root[data-theme="light"] .polaroid {
+  --polaroid-shadow-near: #000;
+  --polaroid-shadow-mid: #555;
+  --polaroid-shadow-far: #999;
 }
 
 .polaroid:hover {

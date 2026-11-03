@@ -17,24 +17,34 @@
 }
 .article-title { margin-bottom: 2rem; }
 .article-title h1 { margin-bottom: 0.5rem; }
-.article-title hr { margin: 1rem 0; }
+.article-title hr { margin: 1rem 0; border-top: 1.5px solid var(--heading); }
 .article-date,
 .last-read-on,
 .last-updated-on {
   color: var(--muted);
-  font-family: var(--font-ui);
-  font-size: 0.85rem;
+  font-family: var(--font-mono);
+  font-size: var(--font-size-meta);
 }
 .last-read-on,
 .last-updated-on { font-style: italic; }
 .hero-image { width: 100%; }
 .hero-image img { margin: 0 auto; }
 
+/*
+ * Notes and callouts: a flat card with a 2px ink rule along the top and a
+ * typed label. No icons, no outlined box.
+ */
 .callout-disclaimer {
   margin: 1.5rem 0;
-  padding: 1rem 1.5rem;
-  border: 1px solid var(--border);
-  background: var(--surface);
+  padding: 0.875rem 1.125rem;
+  border: 0;
+  border-top: 2px solid var(--accent);
+  background: var(--card);
+}
+.callout-disclaimer .label {
+  display: block;
+  margin-bottom: 0.375rem;
+  color: var(--accent);
 }
 .callout-disclaimer p { margin: 0; color: var(--text); }
 
@@ -54,9 +64,12 @@
 @media (max-width: 600px) {
   .prose { --content-start: 2.75rem; }
 }
+/* Book covers get the same light mat the photos use. */
 .article-cover {
   width: min(15rem, 55%);
   margin: 0 auto 2.5rem;
-  border: 1px solid var(--border);
-  box-shadow: 0.35rem 0.45rem 1rem rgb(0 0 0 / 18%);
+  padding: 0.5rem;
+  border-radius: 2px;
+  background: var(--mat);
+  box-shadow: var(--shadow-soft);
 }

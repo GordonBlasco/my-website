@@ -1,85 +1,95 @@
 ---
 import PageLayout from "../layouts/PageLayout.astro";
 import PublicationCard from "../components/cards/PublicationCard.astro";
+
+const intro = `Below is a list of the research I contributed to while working at the National Center for Ecological Analysis and Synthesis (NCEAS) as a Data Scientist and Researcher (2019-2021). For all papers listed, I was heavily involved in the data analysis, geospatial mapping, and writing.
+
+Most of this work was done in R (as was the style at the time).`;
 ---
 
 <PageLayout
   title="Publications"
   description="My published papers"
-  intro=""
+  intro={intro}
 >
-  Below is a list of the research I contributed to while working at the National Center for Ecological 
-  Analysis and Synthesis (NCEAS) as a Data Scientist and Researcher (2019-2021). 
-  For all papers listed, I was heavily involved in the data analysis, geospatial mapping, and writing. <br><br>
-  Most of this work was done in R (as was the style at the time).<br>
-  <br>
   <div class="publication-groups">
-  <p class="section-label">Human Impact Mapping</p>
-  <PublicationCard
-    title="Substantial Gaps in the Current Fisheries Data Landscape"
-    authors="Blasco, Gordon D., Danielle M. Ferraro, Richard S. Cottrell, Benjamin S. Halpern, and Halley E. Froehlich."
-    journal="Frontiers in Marine Science, 2020"
-    paperUrl="https://www.frontiersin.org/journals/marine-science/articles/10.3389/fmars.2020.612831/full"
-    vizUrl="https://emlab-ucsb.shinyapps.io/clean-seafood-conservation-species-table/"
-  />
+    <p class="section-label">Human Impact Mapping</p>
 
-  <PublicationCard
-  title="Mapping Global Inputs and Impacts from Human Sewage in Coastal Ecosystems"
-  authors="Tuholske, Cascade, Benjamin S. Halpern, Gordon Blasco, Juan Carlos Villasenor, Melanie Frazier, and Kelly Caylor"
-  journal="PLOS ONE (n.d.)"
-  paperUrl="https://journals.plos.org/plosone/article?id=10.1371%2Fjournal.pone.0258898"
-  vizUrl="https://www.globalwastewatermodel.com/webmap.html"
-/>
-  <p class="section-label">Food Systems</p>
-  <PublicationCard
-  title="Historical Food Consumption Declines and the Role of Alternative Foods"
-  authors="Ferraro, Danielle M., Richard S. Cottrell, Gordon D. Blasco, Halley E. Froehlich, and Benjamin S. Halpern"
-  journal="Environmental Research Letters 17, no. 1 (January 1, 2022)"
-  paperUrl="https://doi.org/10.1088/1748-9326/ac4072"
-    vizUrl="https://content.cld.iop.org/journals/1748-9326/17/1/014020/revision2/erlac4072f5_hr.jpg"
-  />
+    <PublicationCard
+      title="Substantial Gaps in the Current Fisheries Data Landscape"
+      authors="Blasco, Gordon D., Danielle M. Ferraro, Richard S. Cottrell, Benjamin S. Halpern, and Halley E. Froehlich."
+      journal="Frontiers in Marine Science"
+      year="2020"
+      paperUrl="https://www.frontiersin.org/journals/marine-science/articles/10.3389/fmars.2020.612831/full"
+      vizUrl="https://emlab-ucsb.shinyapps.io/clean-seafood-conservation-species-table/"
+    />
 
+    <PublicationCard
+      title="Mapping Global Inputs and Impacts from Human Sewage in Coastal Ecosystems"
+      authors="Tuholske, Cascade, Benjamin S. Halpern, Gordon Blasco, Juan Carlos Villasenor, Melanie Frazier, and Kelly Caylor"
+      journal="PLOS ONE"
+      year="2021"
+      paperUrl="https://journals.plos.org/plosone/article?id=10.1371%2Fjournal.pone.0258898"
+      vizUrl="https://www.globalwastewatermodel.com/webmap.html"
+    />
 
-<PublicationCard
-  title="Mapping the Spatial Distribution of Global Mariculture Production"
-  authors="Clawson, Gage, Caitlin D. Kuempel, Melanie Frazier, Gordon Blasco, Richard S. Cottrell, Halley E. Froehlich, Marc Metian, et al."
-  journal="Aquaculture 553 (May 2022)"
-  paperUrl="https://doi.org/10.1016/j.aquaculture.2022.738066"
-/>
+    <p class="section-label">Food Systems</p>
 
-<PublicationCard
-  title="Substantial Gaps in the Current Fisheries Data Landscape"
-  authors="Blasco, Gordon D., Danielle M. Ferraro, Richard S. Cottrell, Benjamin S. Halpern, and Halley E. Froehlich"
-  journal="Frontiers in Marine Science 7 (December 17, 2020)"
-  paperUrl="https://doi.org/10.3389/fmars.2020.612831"
-/>
+    <PublicationCard
+      title="Historical Food Consumption Declines and the Role of Alternative Foods"
+      authors="Ferraro, Danielle M., Richard S. Cottrell, Gordon D. Blasco, Halley E. Froehlich, and Benjamin S. Halpern"
+      journal="Environmental Research Letters 17, no. 1"
+      year="2022"
+      paperUrl="https://doi.org/10.1088/1748-9326/ac4072"
+      vizUrl="https://content.cld.iop.org/journals/1748-9326/17/1/014020/revision2/erlac4072f5_hr.jpg"
+    />
 
-<PublicationCard
-  title="The Search for Blue Transitions in Aquaculture‐dominant Countries"
-  authors="Cottrell, Richard S., Danielle M. Ferraro, Gordon D. Blasco, Benjamin S. Halpern, and Halley E. Froehlich"
-  journal="Fish and Fisheries (April 29, 2021)"
-  paperUrl="https://doi.org/10.1111/faf.12566"
-/>
+    <PublicationCard
+      title="Mapping the Spatial Distribution of Global Mariculture Production"
+      authors="Clawson, Gage, Caitlin D. Kuempel, Melanie Frazier, Gordon Blasco, Richard S. Cottrell, Halley E. Froehlich, Marc Metian, et al."
+      journal="Aquaculture 553"
+      year="2022"
+      paperUrl="https://doi.org/10.1016/j.aquaculture.2022.738066"
+    />
 
-<PublicationCard
-  title="The Overlooked Importance of Food Disadoption for the Environmental Sustainability of New Foods"
-  authors="Cottrell, Richard S., Jason Maier, Danielle M. Ferraro, Gordon D. Blasco, Roland Geyer, Halley E. Froehlich, and Benjamin S. Halpern"
-  journal="Environmental Research Letters 16, no. 10 (October 1, 2021)"
-  paperUrl="https://doi.org/10.1088/1748-9326/ac269c"
-/>
+    <PublicationCard
+      title="Substantial Gaps in the Current Fisheries Data Landscape"
+      authors="Blasco, Gordon D., Danielle M. Ferraro, Richard S. Cottrell, Benjamin S. Halpern, and Halley E. Froehlich"
+      journal="Frontiers in Marine Science 7"
+      year="2020"
+      paperUrl="https://doi.org/10.3389/fmars.2020.612831"
+    />
 
-<PublicationCard
-  title="The Long and Narrow Path for Novel Cell‐based Seafood to Reduce Fishing Pressure for Marine Ecosystem Recovery"
-  authors="Halpern, Benjamin S., Jason Maier, Heather J. Lahr, Gordon Blasco, Christopher Costello, Richard S. Cottrell, Olivier Deschenes, et al."
-  journal="Fish and Fisheries (February 8, 2021)"
-  paperUrl="https://doi.org/10.1111/faf.12541"
-/>
+    <PublicationCard
+      title="The Search for Blue Transitions in Aquaculture-dominant Countries"
+      authors="Cottrell, Richard S., Danielle M. Ferraro, Gordon D. Blasco, Benjamin S. Halpern, and Halley E. Froehlich"
+      journal="Fish and Fisheries"
+      year="2021"
+      paperUrl="https://doi.org/10.1111/faf.12566"
+    />
 
-<PublicationCard
-  title="Factors Influencing Urea Use by Giant Kelp (Macrocystis Pyrifera, Phaeophyceae)"
-  authors="Smith, Jason M., Gordon Blasco, Mark A. Brzezinski, John M. Melack, Daniel C. Reed, and Robert J. Miller"
-  journal="Limnology and Oceanography (December 22, 2020)"
-  paperUrl="https://doi.org/10.1002/lno.11674"
-/>
+    <PublicationCard
+      title="The Overlooked Importance of Food Disadoption for the Environmental Sustainability of New Foods"
+      authors="Cottrell, Richard S., Jason Maier, Danielle M. Ferraro, Gordon D. Blasco, Roland Geyer, Halley E. Froehlich, and Benjamin S. Halpern"
+      journal="Environmental Research Letters 16, no. 10"
+      year="2021"
+      paperUrl="https://doi.org/10.1088/1748-9326/ac269c"
+    />
+
+    <PublicationCard
+      title="The Long and Narrow Path for Novel Cell-based Seafood to Reduce Fishing Pressure for Marine Ecosystem Recovery"
+      authors="Halpern, Benjamin S., Jason Maier, Heather J. Lahr, Gordon Blasco, Christopher Costello, Richard S. Cottrell, Olivier Deschenes, et al."
+      journal="Fish and Fisheries"
+      year="2021"
+      paperUrl="https://doi.org/10.1111/faf.12541"
+    />
+
+    <PublicationCard
+      title="Factors Influencing Urea Use by Giant Kelp (Macrocystis Pyrifera, Phaeophyceae)"
+      authors="Smith, Jason M., Gordon Blasco, Mark A. Brzezinski, John M. Melack, Daniel C. Reed, and Robert J. Miller"
+      journal="Limnology and Oceanography"
+      year="2020"
+      paperUrl="https://doi.org/10.1002/lno.11674"
+    />
   </div>
 </PageLayout>

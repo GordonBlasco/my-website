@@ -59,8 +59,8 @@ and Field Notes layouts unless their document structures genuinely diverge.
 
 ### Homepage
 
-`src/pages/index.astro` uses `SiteLayout` directly because its intro/polaroid and
-recent-post composition differ from a normal section page. Its width and spacing
+`src/pages/index.astro` uses `SiteLayout` directly because its intro/matted-photo
+and recent-post composition differ from a normal section page. Its width and spacing
 still come from the same centralized CSS and tokens.
 
 ## Stylesheet structure
@@ -69,6 +69,7 @@ still come from the same centralized CSS and tokens.
 of the style system in this order:
 
 ```css
+@import "./fonts.css";
 @import "./tokens.css";
 @import "./layout.css";
 @import "./patterns.css";
@@ -82,37 +83,68 @@ All pages receive these files through `SiteLayout` → `BaseHead`.
 The source of truth for design values:
 
 - light and dark theme colors
-- body and UI font stacks
-- body and heading sizes
+- heading, body, and mono font stacks
+- body, heading, meta, and label sizes
 - reading-column width
 - page gutter
 - reusable spacing values
 - dot-grid color
-- theme-specific polaroid shadows
+- photo-mat and note-card colors
+- the ledger date-column width
 
 Change a token when the same design decision should update everywhere.
 
 Important tokens:
 
 ```css
---background
---surface
+--background            /* the paper */
+--surface               /* manila by day, steel by night */
 --text
---muted
---accent
+--heading               /* headings sit brighter than body text in dark mode */
+--muted                 /* mono meta */
+--accent                /* folder green by day, kraft tab by night */
 --border
---code-background
 --background-dot
---font-body
---font-ui
+--link                  /* ink; differs from --accent in dark mode */
+--link-underline        /* the soft underline under links */
+--code-background       /* steel olive in BOTH themes */
+--code-text
+--code-inline-background
+--mat                   /* photo and cover mat */
+--card                  /* note/callout card */
+--font-heading          /* IBM Plex Serif 600 */
+--font-body             /* IBM Plex Sans 400 */
+--font-mono             /* IBM Plex Mono, meta and labels only */
 --font-size-body
 --font-size-h1
 --font-size-h2
 --font-size-h3
+--font-size-meta
+--font-size-label
 --content-width
 --page-gutter
 --content-end
+--shadow-soft
+--ledger-date-width
 ```
+
+### `fonts.css`
+
+Declares the six self-hosted IBM Plex faces in `public/fonts/`.
+
+These are hand-written `@font-face` rules rather than Astro's `<Font>`
+component, and must stay that way: `<Font>` emits an inline `<style>` block,
+and the CSP in `netlify.toml` sets `style-src 'self'` with no
+`'unsafe-inline'`, so the browser would drop the rules and silently fall back
+to system fonts in production while still looking correct in `astro dev`.
+
+IBM Plex Sans is a variable font, so each style is one file declared across
+`font-weight: 100 700`. Serif and Mono are static instances, one file per
+weight. Do not pin a single weight against the variable file — the browser
+will not interpolate and headings will render at the wrong weight.
+
+Mono is reserved for dates, captions, and small uppercase labels. Do not set
+body copy or headings in it.
 
 ### `global.css`
 
@@ -155,13 +187,18 @@ Contains reusable page-level compositions:
 
 - `.page-heading`
 - `.section-heading`
-- `.post-list`
+- `.post-list` — the ledger rows
 - homepage `.intro` and `.lede`
 - publication groups, labels, entries, and metadata
 - responsive stacking for lists, intro content, and publications
 
-Blog and Field Notes lists share `.post-list`. Change it once to update both
-indexes and the homepage recent-post list.
+`.post-list` rows are ledger rows: a fixed mono date column on the left, then
+the title, with a hairline rule between rows. The date comes first in the
+markup, so on narrow screens it stacks above the title without needing `order`.
+
+Blog and Library lists share `.post-list`. Change it once to update both
+indexes and the homepage recent-post list. The Library page's own list view is
+separate and still puts its "Last read" date on the right.
 
 ### `content.css`
 
@@ -169,7 +206,8 @@ Contains individual article and rich-content formatting:
 
 - `.article-main` and `.prose`
 - article title and dates
-- callout disclaimers
+- callout disclaimers (the note card)
+- book-cover mats
 - screenshot sizing
 - content-specific dividers
 - article mobile spacing
@@ -194,8 +232,13 @@ To edit a theme, update all corresponding color tokens in both its explicit
 `data-theme` block and its default/system-preference block. Keep semantic token
 names: components should use `var(--text)` rather than hard-coded theme colors.
 
-The polaroid is an intentional exception: its paper and ink remain light like a
-physical print, while its shadow colors inherit theme tokens.
+Pages no longer use the polaroid; they use a themed mat (`--mat`) through
+`MattedPhoto.astro`. `Poloroid.astro` is kept on hand but unused, and carries
+its own fixed light paper and shadow values rather than global tokens. Code
+blocks are the one deliberate
+oddity: they use steel olive in *both* themes, so a code block is light-on-dark
+even on the cream page. That is intended, not a bug. Inline `code` uses
+`--code-inline-background` instead so it stays on the paper.
 
 ## Dot-grid and reading-column behavior
 
@@ -238,8 +281,9 @@ This preserves the centralized width on desktop and safe gutters on mobile.
 Most styling is centralized. Scoped `<style>` blocks remain only for genuinely
 self-contained visual widgets:
 
-- `Poloroid.astro`
+- `MattedPhoto.astro`
 - `LightboxCarousel.astro`
+- `library/index.astro` (the cover grid and list toggle)
 
 These components may still consume global theme tokens. Keep unique mechanics
 inside the component, but move any pattern reused elsewhere into the appropriate
@@ -261,6 +305,10 @@ Edit the light and dark color blocks in `tokens.css`.
 Edit the font and font-size tokens in `tokens.css`. Element behavior such as line
 height and heading margins lives in `global.css`.
 
+To change the actual typefaces, replace the files in `public/fonts/` and the
+`@font-face` rules in `fonts.css`, then update the preloads in `BaseHead.astro`.
+Keep the faces self-hosted; see the `fonts.css` note above.
+
 ### Change the reading width
 
 Edit `--content-width` in `tokens.css`. Header, footer, pages, and articles all
@@ -277,9 +325,10 @@ Edit `--content-end` in `tokens.css`. This controls the solid reading column's
 bottom padding on both section pages and articles. Space between that column and
 the footer then reveals the body's dot grid.
 
-### Change Blog and Field Notes list spacing
+### Change Blog and Library list spacing
 
-Edit `.post-list li` in `patterns.css`.
+Edit `.post-list li` in `patterns.css`. To change the width of the mono date
+column, edit `--ledger-date-width` in `tokens.css`.
 
 ### Change navigation or footer layout
 
@@ -316,8 +365,8 @@ Add the MDX file to the appropriate content directory and use fields accepted by
 - Global element rules apply unless a class-based pattern is more specific.
 - Pattern and content classes should be preferred over page-local styles.
 - Source order matters when selector specificity is equal.
-- Avoid hard-coded colors outside `tokens.css`, except for physical-object styling
-  such as the polaroid paper.
+- Avoid hard-coded colors outside `tokens.css`. There are no longer any
+  exceptions to this.
 - Avoid inline `style` attributes; they bypass the centralized system and conflict
   with the site's strict Content Security Policy.
 - Avoid `!important`; fix ownership or selector specificity instead.
@@ -346,3 +395,12 @@ Check at minimum:
 - About
 - light and dark themes
 - a viewport below 520 px
+
+After any change touching fonts or inline styles, confirm the build output has
+no inline `<style>` blocks and no `style="..."` attributes, since the CSP
+forbids both:
+
+```bash
+grep -rc "<style" dist/*.html
+grep -rn 'style="' dist/*.html
+```

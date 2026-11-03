@@ -1,18 +1,21 @@
 .page-heading { margin-bottom: 3rem; }
 .page-heading h1 { margin-bottom: 0.75rem; }
+/* The intro fills the reading column; a narrower measure left the text
+   wrapping short of the rules below it. */
 .page-heading p {
-  max-width: 34rem;
   margin-bottom: 0;
   color: var(--muted);
 }
+.page-heading p + p { margin-top: 1rem; }
 
 .section-heading {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.25rem;
+  padding-bottom: 0.375rem;
+  border-bottom: 1.5px solid var(--heading);
   gap: 1rem;
-  font-family: var(--font-ui);
 }
 .section-heading h2 { margin: 0; }
 .section-heading a { font-size: 0.85rem; }
@@ -22,25 +25,32 @@
   padding: 0;
   list-style: none;
 }
+/*
+ * Ledger rows: the date sits in a fixed mono column on the left, then the
+ * title, with a hairline rule between rows.
+ */
 .post-list li {
   display: grid;
-  grid-template-columns: 1fr auto;
-  padding: 0.6rem 0;
-  gap: 1.5rem;
+  grid-template-columns: var(--ledger-date-width) minmax(0, 1fr);
+  align-items: baseline;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border);
+  gap: 0 0.875rem;
 }
 .post-list a {
-  color: var(--text);
-  font-size: 1.08rem;
+  color: var(--link);
+  font-size: 1rem;
   text-decoration: none;
 }
 .post-list a:hover,
 .post-list a:focus-visible {
   text-decoration: underline;
+  text-decoration-color: var(--link-underline);
 }
 .post-list time {
   color: var(--muted);
-  font-family: var(--font-ui);
-  font-size: 0.8rem;
+  font-family: var(--font-mono);
+  font-size: var(--font-size-meta);
   white-space: nowrap;
 }
 
@@ -51,30 +61,50 @@
   gap: 1.5rem;
   margin-bottom: 4.5rem;
 }
-.intro figure.polaroid { width: 210px; margin: 0; }
+.intro figure.matted-photo { width: 200px; margin: 0; }
 .intro-copy h2 { margin-top: 0; }
-.lede { max-width: 36rem; color: var(--muted); font-size: 1.2rem; }
+.lede { max-width: 36rem; color: var(--muted); font-size: 1.15rem; }
 
 .publication-groups .section-label {
-  margin: 2rem 0 0.5rem;
-  color: var(--text);
-  font-family: var(--font-ui);
-  font-size: 0.8rem;
-  font-weight: 700;
+  margin: 2.5rem 0 0.25rem;
+  padding-bottom: 0.375rem;
+  border-bottom: 1.5px solid var(--heading);
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-label);
+  font-weight: 500;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 .publication-groups .section-label:first-child { margin-top: 0; }
-.publication { padding: 1rem 0; border-top: 1px solid var(--border); }
+.publication {
+  display: grid;
+  grid-template-columns: var(--ledger-year-width) minmax(0, 1fr);
+  align-items: baseline;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--border);
+  gap: 0 0.75rem;
+}
+.publication-year {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-meta);
+  white-space: nowrap;
+}
 .publication h3 {
   margin: 0 0 0.25rem;
   font-family: var(--font-body);
-  font-size: 1.05rem;
+  font-size: 1rem;
   font-weight: 400;
   letter-spacing: 0;
   line-height: 1.4;
 }
-.publication h3 a { color: var(--text); }
+.publication h3 a { color: var(--link); text-decoration: none; }
+.publication h3 a:hover,
+.publication h3 a:focus-visible {
+  text-decoration: underline;
+  text-decoration-color: var(--link-underline);
+}
 .publication .authors {
   margin: 0 0 0.35rem;
   color: var(--muted);
@@ -86,15 +116,16 @@
   align-items: baseline;
   justify-content: space-between;
   color: var(--muted);
-  font-family: var(--font-ui);
-  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  font-size: var(--font-size-meta);
   gap: 1rem;
 }
 .publication-meta .links { display: flex; flex-shrink: 0; gap: 0.75rem; }
 
 @media (max-width: 520px) {
-  .post-list li { grid-template-columns: 1fr; gap: 0.35rem; }
+  .post-list li { grid-template-columns: minmax(0, 1fr); gap: 0.2rem; }
   .intro { grid-template-columns: 1fr; gap: 1.5rem; }
-  .intro .polaroid { justify-self: center; }
+  .intro .matted-photo { justify-self: center; }
+  .publication { grid-template-columns: minmax(0, 1fr); gap: 0.2rem; }
   .publication-meta { align-items: flex-start; flex-direction: column; gap: 0.3rem; }
 }

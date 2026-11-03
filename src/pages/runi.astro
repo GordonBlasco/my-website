@@ -1,7 +1,7 @@
 ---
 import ArticleLayout from "../layouts/ArticleLayout.astro";
 import AboutHeroImage from "../assets/blog-placeholder-about.jpg";
-import Polaroid from "../components/mdx/Poloroid.astro";
+import MattedPhoto from "../components/mdx/MattedPhoto.astro";
 import blogPlaceholder from "../assets/baby_runi.JPEG";
 ---
 
@@ -9,8 +9,8 @@ import blogPlaceholder from "../assets/baby_runi.JPEG";
   title="Runi Instructions"
   pubDate={new Date("July 14 2025")}
 >
-<div class="float-polaroid">
-        <Polaroid 
+<div class="float-photo">
+        <MattedPhoto 
           src={blogPlaceholder}
           alt="My dog" 
           caption="Baby Runi"

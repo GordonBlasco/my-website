@@ -3,29 +3,33 @@ export interface Props {
   title: string;
   authors: string;
   journal: string;
+  year: string;
   paperUrl?: string;
   vizUrl?: string;
 }
 
-const { title, authors, journal, paperUrl, vizUrl } = Astro.props;
+const { title, authors, journal, year, paperUrl, vizUrl } = Astro.props;
 ---
 
 <article class="publication">
-  <h3>
-    {
-      paperUrl ? (
-        <a href={paperUrl} target="_blank" rel="noopener noreferrer">{title}</a>
-      ) : (
-        title
-      )
-    }
-  </h3>
-  <p class="authors">{authors}</p>
-  <div class="publication-meta">
-    <span>{journal}</span>
-    <span class="links">
-      {paperUrl && <a href={paperUrl} target="_blank" rel="noopener noreferrer">Paper</a>}
-      {vizUrl && <a href={vizUrl} target="_blank" rel="noopener noreferrer">Visualization</a>}
-    </span>
+  <span class="publication-year">{year}</span>
+  <div class="publication-body">
+    <h3>
+      {
+        paperUrl ? (
+          <a href={paperUrl} target="_blank" rel="noopener noreferrer">{title}</a>
+        ) : (
+          title
+        )
+      }
+    </h3>
+    <p class="authors">{authors}</p>
+    <div class="publication-meta">
+      <span>{journal}</span>
+      <span class="links">
+        {paperUrl && <a href={paperUrl} target="_blank" rel="noopener noreferrer">Paper</a>}
+        {vizUrl && <a href={vizUrl} target="_blank" rel="noopener noreferrer">Visualization</a>}
+      </span>
+    </div>
   </div>
 </article>

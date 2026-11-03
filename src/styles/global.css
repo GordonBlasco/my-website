@@ -48,10 +48,11 @@ h4,
 h5,
 h6 {
   margin: 2.25rem 0 0.75rem;
-  color: var(--text);
-  font-family: var(--font-ui);
+  color: var(--heading);
+  font-family: var(--font-heading);
+  font-weight: 600;
   line-height: 1.15;
-  letter-spacing: -0.025em;
+  letter-spacing: -0.01em;
 }
 
 h1 {
@@ -72,13 +73,14 @@ pre {
 }
 
 a {
-  color: var(--accent);
+  color: var(--link);
+  text-decoration-color: var(--link-underline);
   text-decoration-thickness: 1px;
-  text-underline-offset: 0.18em;
+  text-underline-offset: 3px;
 }
 
 a:hover {
-  text-decoration-thickness: 2px;
+  text-decoration-color: var(--link);
 }
 
 img {
@@ -101,32 +103,49 @@ blockquote {
 }
 
 code {
-  padding: 0.1em 0.25em;
-  border-radius: 3px;
-  background: var(--code-background);
-  font-size: 0.88em;
+  padding: 0.1em 0.3em;
+  border-radius: 2px;
+  color: var(--text);
+  background: var(--code-inline-background);
+  font-family: var(--font-mono);
+  font-size: 0.85em;
 }
 
+/* Code blocks use steel olive in both themes. */
 pre {
   max-width: 100%;
-  padding: 1rem;
+  padding: 0.875rem 1.125rem;
   overflow-x: auto;
-  border: 1px solid var(--border);
+  border-radius: 3px;
+  color: var(--code-text);
   background: var(--code-background);
-  font-size: 0.9rem;
-  line-height: 1.5;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  line-height: 1.7;
 }
 
 pre code {
   padding: 0;
+  color: inherit;
   background: none;
+  font-size: inherit;
 }
 
 .eyebrow,
 .meta {
   color: var(--muted);
-  font-family: var(--font-ui);
-  font-size: 0.85rem;
+  font-family: var(--font-mono);
+  font-size: var(--font-size-meta);
+}
+
+/* Uppercase mono label, as on the note card. */
+.label {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-label);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .sr-only {

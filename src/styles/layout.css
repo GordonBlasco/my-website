@@ -6,7 +6,6 @@ body {
 .site-header {
   border-bottom: 1px solid var(--border);
   background: var(--background);
-  font-family: var(--font-ui);
 }
 
 .site-header nav {
@@ -20,8 +19,10 @@ body {
 }
 
 .site-header .brand {
-  color: var(--text);
-  font-weight: 700;
+  color: var(--heading);
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 600;
   text-decoration: none;
 }
 
@@ -86,8 +87,8 @@ footer {
   border-top: 1px solid var(--border);
   color: var(--muted);
   background: var(--background);
-  font-family: var(--font-ui);
-  font-size: 0.8rem;
+  font-family: var(--font-mono);
+  font-size: var(--font-size-meta);
 }
 
 .footer-inner {

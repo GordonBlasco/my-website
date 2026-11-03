@@ -2,7 +2,7 @@
 import { getCollection } from "astro:content";
 import SiteLayout from "../layouts/SiteLayout.astro";
 import FormattedDate from "../components/layouts/FormattedDate.astro";
-import Polaroid from "../components/mdx/Poloroid.astro";
+import MattedPhoto from "../components/mdx/MattedPhoto.astro";
 import runiPhoto from "../assets/baby_runi.JPEG";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 
@@ -41,7 +41,7 @@ const posts = [
           and less about my profession. Some of that may sneak in though.  
           </p>
         </div>
-        <Polaroid src={runiPhoto} alt="Runi as a puppy" caption="Baby Runi" />
+        <MattedPhoto src={runiPhoto} alt="Runi as a puppy" caption="Baby Runi" />
       </section>
 
       <section aria-labelledby="recent-posts">
@@ -53,10 +53,8 @@ const posts = [
           {
             posts.map((post) => (
               <li>
+                <FormattedDate date={post.date} />
                 <a href={post.href}>{post.data.title}</a>
-                <time datetime={post.date.toISOString()}>
-                  <FormattedDate date={post.date} />
-                </time>
               </li>
             ))
           }
