@@ -14,8 +14,16 @@ import { SITE_TITLE } from "../../../consts";
         <HeaderLink href="/about">About</HeaderLink>
       </div>
       <button class="theme-toggle" type="button" aria-label="Switch color theme" title="Switch color theme">
-        <span class="sun" aria-hidden="true">☀</span>
-        <span class="moon" aria-hidden="true">☾</span>
+        <svg class="sun" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+          <circle cx="8" cy="8" r="3.4"></circle>
+          <g class="rays" fill="none">
+            <path d="M8 1.2v1.6M8 13.2v1.6M1.2 8h1.6M13.2 8h1.6"></path>
+            <path d="M3.19 3.19 4.32 4.32M11.68 11.68l1.13 1.13M3.19 12.81 4.32 11.68M11.68 4.32l1.13-1.13"></path>
+          </g>
+        </svg>
+        <svg class="moon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+          <path d="M10.5 2.2a6.2 6.2 0 1 0 0 11.6 6.2 6.2 0 0 1 0-11.6z" fill="none"></path>
+        </svg>
       </button>
     </div>
   </nav>

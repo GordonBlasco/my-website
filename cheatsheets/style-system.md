@@ -205,10 +205,13 @@ and the footer's social links share one treatment (uppercase, `0.75rem`,
 marked with `--heading` text over a 2px `--accent` underline, which reads as a
 tab without reintroducing folder tabs.
 
-The theme switch shows both the sun and moon glyphs at once and brings the
-active one forward. Those two glyphs fall outside the self-hosted Latin subset,
-so they render from a system fallback face; that is accepted here, but keep
-other chrome text inside the subset.
+The theme switch shows both a sun and a moon at once and brings the active one
+forward. Both are inline SVG on `currentColor`, sized at `1em`. They used to be
+the ☀ and ☾ characters, which sit outside the self-hosted Latin subset and so
+came from whatever face the platform fell back to -- and iOS serves U+2600 from
+the colour emoji font, so phones got a cartoon sun while desktop got a
+monochrome one. Any future chrome mark should be drawn for the same reason;
+keep chrome *text* inside the subset.
 
 ### Rule weights
 
