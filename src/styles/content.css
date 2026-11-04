@@ -46,6 +46,28 @@
 
 .runi-divider { margin: 1.25rem 0; }
 
+/*
+ * Reaction clips. Self-hosted MP4 rather than a third-party GIF embed: the CSP
+ * allows no off-site scripts or frames, and the same clip is ~750KB as H.264
+ * against ~5MB as a GIF. Muted + playsinline so it behaves like a GIF
+ * everywhere, including iOS.
+ */
+.content-clip {
+  margin: 2rem 0;
+}
+.content-clip video {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: var(--surface);
+}
+.content-clip figcaption {
+  margin-top: 0.5rem;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-meta);
+}
+
 /* UI screenshots stay at or below half their source width on 2x displays. */
 .screenshot {
   margin: 2rem auto;

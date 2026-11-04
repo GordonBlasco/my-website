@@ -21,5 +21,7 @@ Lastly, the images in the book are very low quality. For a sticker price of 40 b
 
 Good writing, but too short, cheap printing, lame comment gimick. Verdict? It's a cash grab and I am looking forward to the next volume anyway!
 
-<div class="tenor-gif-embed" data-postid="27711004" data-share-method="host" data-aspect-ratio="1.78771" data-width="100%"><a href="https://tenor.com/view/cash-grab-tim-robinson-tim-and-eric-i-think-you-should-leave-tim-cash-grab-gif-27711004">Cash Grab Tim Robinson GIF</a> from <a href="https://tenor.com/search/cash+grab-gifs">Cash Grab GIFs</a></div>
-<script type="text/javascript" async src="https://tenor.com/embed.js"></script>
+<figure class="content-clip">
+  <video src="/media/cash-grab-tim-robinson.mp4" width="640" height="358" autoplay loop muted playsinline aria-label="Tim Robinson, in I Think You Should Leave, saying it's a cash grab"></video>
+  <figcaption><a href="https://tenor.com/view/cash-grab-tim-robinson-tim-and-eric-i-think-you-should-leave-tim-cash-grab-gif-27711004">Cash Grab Tim Robinson GIF</a></figcaption>
+</figure>
