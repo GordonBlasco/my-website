@@ -1,3 +1,4 @@
+@import "./fonts.css";
 @import "./tokens.css";
 @import "./layout.css";
 @import "./patterns.css";
@@ -27,18 +28,16 @@ body {
 }
 
 main {
-  --content-start: 4rem;
+  --content-start: 2.5rem;
   width: min(var(--content-width), calc(100% - (2 * var(--page-gutter))));
   margin: 0 auto;
   padding: var(--content-start) 0 var(--content-end);
 }
 
+/* The reading column is solid paper for its whole height; the dot grid is the
+ * desk it sits on, and shows only outside the column. */
 main:not(.article-main) {
-  background: linear-gradient(
-    to bottom,
-    transparent 0 var(--content-start),
-    var(--background) var(--content-start)
-  );
+  background: var(--background);
 }
 
 h1,
@@ -162,5 +161,5 @@ pre code {
 
 @media (max-width: 600px) {
   body { font-size: 1rem; }
-  main { --content-start: 2.75rem; }
+  main { --content-start: 2rem; }
 }

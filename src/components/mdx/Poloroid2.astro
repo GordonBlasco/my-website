@@ -1,0 +1,72 @@
+---
+import { Image } from "astro:assets";
+
+const { src, alt = "", caption = "" } = Astro.props;
+---
+
+<figure class="polaroid-2">
+  <div class="print">
+    {
+      typeof src === "string" ? (
+        <img src={src} alt={alt} loading="lazy" decoding="async" />
+      ) : (
+        <Image
+          src={src}
+          alt={alt}
+          width={500}
+          widths={[250, 500]}
+          sizes="(max-width: 520px) 200px, 250px"
+          format="webp"
+          loading="eager"
+        />
+      )
+    }
+  </div>
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>
+
+<style>
+  /*
+   * A polaroid built from the site's own materials rather than against them.
+   * It keeps what makes the format read as an instant print — the deep chin
+   * below the image, the caption written on it, and a slight lean — and drops
+   * what came from somewhere else: the fixed #fffbef paper, the 3px black
+   * frame, the hard three-layer shadow, and the contrast/saturate filter.
+   *
+   * Paper is --mat, so it follows the theme. The frame is the same hairline
+   * used on book covers, the shadow is the shared warm --shadow-soft, and the
+   * caption is mono like every other caption on the site. The lean is halved;
+   * it is the one gesture here that is not from the office vocabulary, so it
+   * stays quiet.
+   */
+  .polaroid-2 {
+    display: block;
+    max-width: 250px;
+    margin: 1rem 0;
+    padding: 0.5rem;
+    border: 1px solid var(--border);
+    background: var(--mat);
+    box-shadow: var(--shadow-soft);
+    transform: rotate(-0.75deg);
+    transition: transform 0.15s ease;
+  }
+
+  .polaroid-2:hover {
+    transform: rotate(0deg);
+  }
+
+  .print :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  figcaption {
+    /* The chin: deeper below the caption than above it, as on a real print. */
+    padding: 0.75rem 0 0.5rem;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-meta);
+    text-align: center;
+  }
+</style>

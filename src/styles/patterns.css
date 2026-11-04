@@ -1,10 +1,13 @@
-.page-heading { margin-bottom: 3rem; }
+.page-heading { margin-bottom: 1.75rem; }
 .page-heading h1 { margin-bottom: 0.75rem; }
-/* The intro fills the reading column; a narrower measure left the text
-   wrapping short of the rules below it. */
+/*
+ * The intro fills the reading column; a narrower measure left the text
+ * wrapping short of the rules below it. It reads at full --text, not --muted:
+ * it is the first thing said on the page, not metadata about it.
+ */
 .page-heading p {
   margin-bottom: 0;
-  color: var(--muted);
+  color: var(--text);
 }
 .page-heading p + p { margin-top: 1rem; }
 
@@ -61,9 +64,16 @@
   gap: 1.5rem;
   margin-bottom: 4.5rem;
 }
-.intro figure.matted-photo { width: 200px; margin: 0; }
+/*
+ * The intro photo is sized here rather than in the component, so swapping which
+ * one the homepage imports needs no other change. The column is wider than the
+ * print: the polaroids are rotated and need slack to lean into.
+ */
+.intro figure.matted-photo,
+.intro figure.polaroid,
+.intro figure.polaroid-2 { width: 200px; margin: 0; }
 .intro-copy h2 { margin-top: 0; }
-.lede { max-width: 36rem; color: var(--muted); font-size: 1.15rem; }
+.lede { max-width: 36rem; color: var(--text); font-size: 1.15rem; }
 
 .publication-groups .section-label {
   margin: 2.5rem 0 0.25rem;
@@ -125,7 +135,9 @@
 @media (max-width: 520px) {
   .post-list li { grid-template-columns: minmax(0, 1fr); gap: 0.2rem; }
   .intro { grid-template-columns: 1fr; gap: 1.5rem; }
-  .intro .matted-photo { justify-self: center; }
+  .intro .matted-photo,
+  .intro .polaroid,
+  .intro .polaroid-2 { justify-self: center; }
   .publication { grid-template-columns: minmax(0, 1fr); gap: 0.2rem; }
   .publication-meta { align-items: flex-start; flex-direction: column; gap: 0.3rem; }
 }

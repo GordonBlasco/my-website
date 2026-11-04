@@ -5,15 +5,11 @@
   padding: 0;
 }
 .prose {
-  --content-start: 4rem;
+  --content-start: 2.5rem;
   width: min(var(--content-width), calc(100% - (2 * var(--page-gutter))));
   margin: 0 auto;
   padding: var(--content-start) 0 var(--content-end);
-  background: linear-gradient(
-    to bottom,
-    transparent 0 var(--content-start),
-    var(--background) var(--content-start)
-  );
+  background: var(--background);
 }
 .article-title { margin-bottom: 2rem; }
 .article-title h1 { margin-bottom: 0.5rem; }
@@ -61,15 +57,85 @@
 .screenshot-homepage { max-width: 551px; }
 .screenshot-blog { max-width: 486px; }
 
-@media (max-width: 600px) {
-  .prose { --content-start: 2.75rem; }
+/*
+ * Book pages lead with the cover: the print is the top-left corner of the page
+ * and the record runs beside it as a catalogue card. The title is a row of
+ * that card rather than a display heading, so a book page carries no large
+ * title anywhere — the cover does that work. It is still the <h1>.
+ */
+.book-head {
+  display: grid;
+  grid-template-columns: 12rem minmax(0, 1fr);
+  align-items: start;
+  gap: 1.75rem;
 }
+
 /* Book covers get the same light mat the photos use. */
 .article-cover {
-  width: min(15rem, 55%);
-  margin: 0 auto 2.5rem;
+  width: 100%;
+  margin: 0;
   padding: 0.5rem;
   border-radius: 2px;
   background: var(--mat);
   box-shadow: var(--shadow-soft);
+}
+
+/*
+ * A ledger, like the date columns in the post lists: a mono label column sized
+ * to its longest term, then the value. The author is one of its rows, not a
+ * heading above it. Values read at --text and labels at --muted; muting both
+ * would leave the whole block below the page's contrast.
+ */
+.book-facts {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  align-items: baseline;
+  margin: 0;
+  gap: 0.4rem 1rem;
+  font-family: var(--font-mono);
+  font-size: var(--font-size-meta);
+}
+.book-facts dt {
+  color: var(--muted);
+  font-size: var(--font-size-label);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+/* Dates hold one line; the title and the authors are free to wrap. */
+.book-facts dd {
+  margin: 0;
+  color: var(--text);
+  white-space: nowrap;
+}
+.book-facts .book-title,
+.book-facts .book-author { white-space: normal; line-height: 1.4; }
+
+/*
+ * The title row is the one the eye should land on first: same mono column as
+ * every other value, a size up and in the heading ink. The <h1> inherits that
+ * rather than carrying display type of its own.
+ */
+.book-facts .book-title h1 {
+  margin: 0;
+  color: var(--heading);
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+@media (max-width: 600px) {
+  .prose { --content-start: 2rem; }
+  .book-head { grid-template-columns: 8rem minmax(0, 1fr); gap: 1.25rem; }
+}
+
+/*
+ * Stacking at the site's structural breakpoint: narrower than this, the record
+ * column is too tight to set a title in. The cover keeps source order and
+ * leads, the way a jacket does.
+ */
+@media (max-width: 520px) {
+  .book-head { grid-template-columns: minmax(0, 1fr); gap: 1.25rem; }
+  .article-cover { width: 10rem; }
 }

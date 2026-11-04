@@ -54,6 +54,16 @@ The shared layout for individual content entries. It supplies:
 - publication and update dates
 - the `.prose` content wrapper
 
+The header has two forms, chosen by whether the entry has a `cover`. Blog
+entries get the full-width title, the rule, and a mono date line. Library
+entries get a `.book-head` grid instead: the cover is the top-left corner of
+the page and a `.book-facts` catalogue card sits beside it — Title / Author /
+Published / Last read / Posted / Updated, all in the same mono label-and-value
+rows. The title is a row of that card, not a display heading, so a book page
+carries no large title anywhere; the cover does that work. It is still the
+`<h1>`, set in the ledger's mono a size up and in `--heading`. There is no
+title rule on these pages, and `publicationDate` is surfaced nowhere else.
+
 Both Blog and Field Notes entries use this layout. Do not create separate Blog
 and Field Notes layouts unless their document structures genuinely diverge.
 
@@ -101,7 +111,7 @@ Important tokens:
 --surface               /* manila by day, steel by night */
 --text
 --heading               /* headings sit brighter than body text in dark mode */
---muted                 /* mono meta */
+--muted                 /* mono meta: dates, captions, labels — not intro copy */
 --accent                /* folder green by day, kraft tab by night */
 --border
 --background-dot
@@ -181,6 +191,39 @@ Contains the outer chrome shared by pages:
 The header and footer use solid `--background` colors, so the body dot grid does
 not appear behind them.
 
+The masthead sits on the paper like the rest of the page and is closed with a
+2px `--accent` rule — folder green by day, kraft gold by night. Colour, not
+weight, is what marks it as chrome. Two things have been tried here and
+rejected: a heavy `--heading` rule, which read as a second black bar a few lines
+above the page heading's own rule, and a filled `--surface` panel, which put a
+slab of colour across the top of the page.
+
+A serif wordmark sits on the left and a mono index on the right: the nav links
+and the footer's social links share one treatment (uppercase, `0.75rem`,
+`0.08em` tracking), so the two ends of the page rhyme. The current section is
+marked with `--heading` text over a 2px `--accent` underline, which reads as a
+tab without reintroducing folder tabs.
+
+The theme switch shows both the sun and moon glyphs at once and brings the
+active one forward. Those two glyphs fall outside the self-hosted Latin subset,
+so they render from a system fallback face; that is accepted here, but keep
+other chrome text inside the subset.
+
+### Rule weights
+
+Three weights, heaviest to lightest. Use the lightest one that reads:
+
+| Weight | Where |
+| --- | --- |
+| `2px var(--accent)` | under the masthead, and under the active nav link |
+| `1.5px var(--heading)` | section headings, publication group labels, the article title rule |
+| `1px var(--border)` | between ledger rows, the footer's top rule, and anywhere else a divider is needed |
+
+There is exactly one heavy horizontal rule in view at a time, and it belongs to
+the content: the one under a section heading. The masthead's rule is accent
+coloured rather than heavy, and the footer closes with a plain hairline. Do not
+reintroduce a `--heading` rule in either place.
+
 ### `patterns.css`
 
 Contains reusable page-level compositions:
@@ -207,7 +250,7 @@ Contains individual article and rich-content formatting:
 - `.article-main` and `.prose`
 - article title and dates
 - callout disclaimers (the note card)
-- book-cover mats
+- the `.book-head` cover-and-ledger grid, and the cover mat
 - screenshot sizing
 - content-specific dividers
 - article mobile spacing
@@ -232,9 +275,14 @@ To edit a theme, update all corresponding color tokens in both its explicit
 `data-theme` block and its default/system-preference block. Keep semantic token
 names: components should use `var(--text)` rather than hard-coded theme colors.
 
-Pages no longer use the polaroid; they use a themed mat (`--mat`) through
-`MattedPhoto.astro`. `Poloroid.astro` is kept on hand but unused, and carries
-its own fixed light paper and shadow values rather than global tokens. Code
+Three photo components exist; `MattedPhoto.astro` is the one in use, on both
+the homepage and the Runi page, and it mounts the print on the themed mat
+(`--mat`). The other two are kept but unused: `Poloroid.astro` carries its own
+fixed light paper, black border and hard layered shadow in both themes rather
+than global tokens — that is the point of it — and `Poloroid2.astro` is the
+same format rebuilt on `--mat` and `--shadow-soft`. All three take the same
+`src` / `alt` / `caption` props, and the homepage sizes whichever is imported
+through `.intro figure` in `patterns.css`, so switching is one import line. Code
 blocks are the one deliberate
 oddity: they use steel olive in *both* themes, so a code block is light-on-dark
 even on the cream page. That is intended, not a bug. Inline `code` uses
@@ -242,16 +290,22 @@ even on the cream page. That is intended, not a bug. Inline `code` uses
 
 ## Dot-grid and reading-column behavior
 
-The dot grid is a CSS radial gradient on `<body>`.
+The dot grid is a CSS radial gradient on `<body>`. Think of it as the desk the
+page sits on: it shows in the margins beside the reading column and nowhere else.
 
-- Header and footer mask it with solid backgrounds.
-- Reading columns become solid where content begins.
-- The top gap between the header and page title remains transparent, allowing
-  the grid to show there.
-- `--content-start` controls both top padding and the exact grid-to-solid transition.
+- `main` and `.prose` are solid `--background` for their whole height, so no
+  dots appear inside the reading column — including in the gap between the
+  masthead and the page title.
+- `.site-header` and `footer` are transparent; the masthead panel and
+  `.footer-inner` paint themselves. The grid therefore runs unbroken down both
+  margins from the very top of the page.
+- The gap between the end of the content column and the footer is deliberate,
+  and does show the grid.
 
-Desktop uses `4rem`; mobile uses `2.75rem`. `ArticleLayout` and `PageLayout`
-consume the same values, which keeps their title baselines aligned.
+`--content-start` controls the top padding above a page or article title.
+Desktop uses `2.5rem`; mobile uses `2rem`. `ArticleLayout` and `PageLayout`
+consume the same values, which keeps their title baselines aligned. It no longer
+has anything to do with where the grid stops.
 
 If title alignment changes, update `--content-start` rather than adding a margin
 to an individual page.
@@ -282,6 +336,7 @@ Most styling is centralized. Scoped `<style>` blocks remain only for genuinely
 self-contained visual widgets:
 
 - `MattedPhoto.astro`
+- `Poloroid.astro` and `Poloroid2.astro` (both currently unused)
 - `LightboxCarousel.astro`
 - `library/index.astro` (the cover grid and list toggle)
 
@@ -312,7 +367,10 @@ Keep the faces self-hosted; see the `fonts.css` note above.
 ### Change the reading width
 
 Edit `--content-width` in `tokens.css`. Header, footer, pages, and articles all
-consume it.
+consume it, and no page overrides it — Library used to widen itself to 880px
+(1040px above 1120px), which left its title starting to the left of the wordmark
+and disagreeing with its own entry pages. Keep it that way: if a page needs more
+room, size the content inside the column rather than redefining the column.
 
 ### Change page-title vertical position
 
@@ -324,6 +382,14 @@ article value in `content.css` synchronized.
 Edit `--content-end` in `tokens.css`. This controls the solid reading column's
 bottom padding on both section pages and articles. Space between that column and
 the footer then reveals the body's dot grid.
+
+### Change the space above a page or article title
+
+Edit `--content-start` in `global.css` (for `main`) and keep the matching value
+in `content.css` (for `.prose`) in sync, including both mobile overrides.
+The gap below a page's title and intro is `.page-heading`'s `margin-bottom` in
+`patterns.css`; Library overrides it down, because a control row follows the
+intro there rather than prose.
 
 ### Change Blog and Library list spacing
 

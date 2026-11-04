@@ -3,9 +3,19 @@ body {
   flex-direction: column;
 }
 
+/*
+ * The masthead sits on the paper like everything else, closed with a 2px
+ * accent rule: folder green by day, kraft gold by night. It is colour, not
+ * weight, that marks it as chrome — a heavy --heading rule here competed with
+ * the one under the page heading a few lines below it, and a filled panel put
+ * a slab of colour across the top of the page.
+ *
+ * The header itself stays transparent so the dot grid runs unbroken down both
+ * margins from the very top of the page; the nav paints the reading column,
+ * continuing the solid paper that `main` carries below it.
+ */
 .site-header {
-  border-bottom: 1px solid var(--border);
-  background: var(--background);
+  background: transparent;
 }
 
 .site-header nav {
@@ -13,8 +23,10 @@ body {
   align-items: center;
   justify-content: space-between;
   width: min(var(--content-width), calc(100% - (2 * var(--page-gutter))));
-  min-height: 4.5rem;
+  min-height: 3.25rem;
   margin: 0 auto;
+  border-bottom: 2px solid var(--accent);
+  background: var(--background);
   gap: 2rem;
 }
 
@@ -26,23 +38,31 @@ body {
   text-decoration: none;
 }
 
-.site-header .brand-group {
+.site-header .nav-right {
   display: flex;
-  align-items: center;
-  gap: 0.6rem;
+  align-items: baseline;
+  gap: 1.25rem;
 }
 
+/*
+ * Both states are always visible and the active one is brought forward.
+ * The sun and moon glyphs sit outside the self-hosted Latin subset, so they
+ * render from a system fallback face by design; that is why they are sized
+ * and spaced here rather than inheriting the mono index treatment.
+ */
 .theme-toggle {
   display: inline-flex;
   align-items: center;
-  padding: 0.15rem 0.3rem;
+  padding: 0 0 0 1.25rem;
   border: 0;
+  border-left: 1px solid var(--border);
   color: var(--muted);
   background: transparent;
   font: inherit;
   font-size: 0.9rem;
   line-height: 1;
   cursor: pointer;
+  gap: 0.45rem;
 }
 
 .theme-toggle:hover,
@@ -66,47 +86,77 @@ body {
   :root:not([data-theme]) .theme-toggle .moon { opacity: 0.4; }
 }
 
+/* The nav is the file's index, so it is set like the other mono labels. */
 .site-header .nav-links {
   display: flex;
-  gap: 1.25rem;
-  font-size: 0.9rem;
+  gap: 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .site-header .nav-links a {
+  padding-bottom: 0.2rem;
+  border-bottom: 2px solid transparent;
   color: var(--muted);
   text-decoration: none;
 }
 
-.site-header .nav-links a:hover,
-.site-header .nav-links a.active {
+.site-header .nav-links a:hover {
   color: var(--text);
+}
+
+.site-header .nav-links a.active {
+  border-bottom-color: var(--accent);
+  color: var(--heading);
 }
 
 footer {
   margin-top: auto;
-  border-top: 1px solid var(--border);
   color: var(--muted);
-  background: var(--background);
+  background: transparent;
   font-family: var(--font-mono);
   font-size: var(--font-size-meta);
 }
 
+/*
+ * Quiet hairline, not the masthead's weight. With the accent panel at the top
+ * of the page, a second heavy rule down here would put the chrome back into
+ * competition with the content.
+ */
 .footer-inner {
   display: flex;
   justify-content: space-between;
   width: min(var(--content-width), calc(100% - (2 * var(--page-gutter))));
   margin: 0 auto;
   padding: 1.5rem 0;
+  border-top: 1px solid var(--border);
+  background: var(--background);
   gap: 1rem;
 }
 
+/* Mirrors the masthead index so the two ends of the page rhyme. */
 .footer-inner nav {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  gap: 1.5rem;
 }
 
-.footer-inner a { color: inherit; }
+.footer-inner a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.footer-inner a:hover {
+  color: var(--text);
+  text-decoration: underline;
+  text-decoration-color: var(--link-underline);
+  text-underline-offset: 3px;
+}
 
 @media (max-width: 520px) {
   .site-header nav {
@@ -116,10 +166,21 @@ footer {
     padding: 1rem 0;
   }
 
-  .site-header .nav-links {
+  .site-header .nav-right {
     width: 100%;
+    align-items: baseline;
     flex-wrap: wrap;
-    gap: 0.75rem;
+    gap: 0.75rem 1rem;
+  }
+
+  .site-header .nav-links {
+    flex-wrap: wrap;
+    gap: 0.75rem 1rem;
+  }
+
+  .theme-toggle {
+    padding-left: 0;
+    border-left: 0;
   }
 
   .footer-inner { flex-direction: column; }

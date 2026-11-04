@@ -5,18 +5,18 @@ import { SITE_TITLE } from "../../../consts";
 
 <header class="site-header">
   <nav aria-label="Primary navigation">
-    <div class="brand-group">
-      <a class="brand" href="/">{SITE_TITLE}</a>
+    <a class="brand" href="/">{SITE_TITLE}</a>
+    <div class="nav-right">
+      <div class="nav-links">
+        <HeaderLink href="/blog">Blog</HeaderLink>
+        <HeaderLink href="/library">Library</HeaderLink>
+        <HeaderLink href="/publications">Publications</HeaderLink>
+        <HeaderLink href="/about">About</HeaderLink>
+      </div>
       <button class="theme-toggle" type="button" aria-label="Switch color theme" title="Switch color theme">
         <span class="sun" aria-hidden="true">☀</span>
         <span class="moon" aria-hidden="true">☾</span>
       </button>
-    </div>
-    <div class="nav-links">
-      <HeaderLink href="/blog">Blog</HeaderLink>
-      <HeaderLink href="/library">Library</HeaderLink>
-      <HeaderLink href="/publications">Publications</HeaderLink>
-      <HeaderLink href="/about">About</HeaderLink>
     </div>
   </nav>
 </header>

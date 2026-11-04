@@ -22,41 +22,62 @@ const lastRead = finishedDates && finishedDates.length > 0
 <SiteLayout title={title} description={SITE_DESCRIPTION}>
   <main class="article-main">
     <article class="prose">
-      <header class="article-title">
-        <h1>{title}</h1>
-        <hr />
-        {pubDate && <div class="article-date"><FormattedDate date={pubDate} /></div>}
-        {
-          authors && publicationDate && (
-            <div class="publication-date">
-              {authors.join(" and ")}
-            </div>
-          )
-        }
-        {
-          lastRead && (
-            <div class="last-read-on">
-              Last read on <FormattedDate date={lastRead} />
-            </div>
-          )
-        }
-        {
-          updatedDate && (
-            <div class="last-updated-on">
-              Last updated on <FormattedDate date={updatedDate} />
-            </div>
-          )
-        }
-      </header>
       {
-        cover && (
-          <Image
-            class="article-cover"
-            src={cover}
-            alt={`Cover of ${title}`}
-            widths={[240, 360, 480]}
-            sizes="(max-width: 600px) 180px, 240px"
-          />
+        cover ? (
+          <header class="article-title book-head">
+            <Image
+              class="article-cover"
+              src={cover}
+              alt={`Cover of ${title}`}
+              widths={[240, 360, 480]}
+              sizes="(max-width: 520px) 160px, 192px"
+            />
+            <dl class="book-facts">
+              <dt>Title</dt>
+              <dd class="book-title"><h1>{title}</h1></dd>
+              {authors && (
+                <>
+                  <dt>{authors.length > 1 ? "Authors" : "Author"}</dt>
+                  <dd class="book-author">{authors.join(" and ")}</dd>
+                </>
+              )}
+              {publicationDate && (
+                <>
+                  <dt>Published</dt>
+                  <dd>{publicationDate}</dd>
+                </>
+              )}
+              {lastRead && (
+                <>
+                  <dt>Last read</dt>
+                  <dd><FormattedDate date={lastRead} /></dd>
+                </>
+              )}
+              {pubDate && (
+                <>
+                  <dt>Posted</dt>
+                  <dd><FormattedDate date={pubDate} /></dd>
+                </>
+              )}
+              {updatedDate && (
+                <>
+                  <dt>Updated</dt>
+                  <dd><FormattedDate date={updatedDate} /></dd>
+                </>
+              )}
+            </dl>
+          </header>
+        ) : (
+          <header class="article-title">
+            <h1>{title}</h1>
+            <hr />
+            {pubDate && <div class="article-date"><FormattedDate date={pubDate} /></div>}
+            {updatedDate && (
+              <div class="last-updated-on">
+                Last updated on <FormattedDate date={updatedDate} />
+              </div>
+            )}
+          </header>
         )
       }
       <slot />
