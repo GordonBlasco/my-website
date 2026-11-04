@@ -12,6 +12,8 @@ type Props = BlogData | LibraryData;
 const { title, pubDate, updatedDate } = Astro.props;
 const cover = "cover" in Astro.props ? Astro.props.cover : undefined;
 const publicationDate = "publicationDate" in Astro.props ? Astro.props.publicationDate : undefined;
+const category = "category" in Astro.props ? Astro.props.category : undefined;
+const pages = "pages" in Astro.props ? Astro.props.pages : undefined;
 const authors = "authors" in Astro.props ? Astro.props.authors : undefined;
 const finishedDates = "finishedDates" in Astro.props ? Astro.props.finishedDates : undefined;
 const lastRead = finishedDates && finishedDates.length > 0
@@ -41,10 +43,22 @@ const lastRead = finishedDates && finishedDates.length > 0
                   <dd class="book-author">{authors.join(" and ")}</dd>
                 </>
               )}
+              {category && (
+                <>
+                  <dt>Category</dt>
+                  <dd>{category === "fiction" ? "Fiction" : "Non-fiction"}</dd>
+                </>
+              )}
               {publicationDate && (
                 <>
                   <dt>Published</dt>
                   <dd>{publicationDate}</dd>
+                </>
+              )}
+              {pages && (
+                <>
+                  <dt>Pages</dt>
+                  <dd>{pages}</dd>
                 </>
               )}
               {lastRead && (

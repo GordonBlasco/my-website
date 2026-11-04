@@ -58,8 +58,9 @@ The header has two forms, chosen by whether the entry has a `cover`. Blog
 entries get the full-width title, the rule, and a mono date line. Library
 entries get a `.book-head` grid instead: the cover is the top-left corner of
 the page and a `.book-facts` catalogue card sits beside it — Title / Author /
-Published / Last read / Posted / Updated, all in the same mono label-and-value
-rows. The title is a row of that card, not a display heading, so a book page
+Category / Published / Pages / Last read / Posted / Updated, all in the same
+mono label-and-value rows. Every row is conditional, so a field the entry
+lacks leaves no gap. The title is a row of that card, not a display heading, so a book page
 carries no large title anywhere; the cover does that work. It is still the
 `<h1>`, set in the ledger's mono a size up and in `--heading`. There is no
 title rule on these pages, and `publicationDate` is surfaced nowhere else.
@@ -288,6 +289,102 @@ oddity: they use steel olive in *both* themes, so a code block is light-on-dark
 even on the cream page. That is intended, not a bug. Inline `code` uses
 `--code-inline-background` instead so it stays on the paper.
 
+## Charts
+
+The Library's Plots view stacks two charts, both in `src/components/charts/`:
+
+- `PublicationScatter.astro` — publication year, fiction and non-fiction as two
+  labelled lanes of dots. x from `yearScale()` in `charts/scale.ts`.
+- `PagesReadArea.astro` — pages finished per month, stacked and accumulated.
+  x from `monthScale()`.
+
+They are on **different x axes**, so nothing should be read across between
+them. The month labels are what signals that, now that the captions are short
+titles; keep them legible. What the two charts do share is `PAD_L`/`PAD_R`, so
+their plot areas line up down the page.
+
+`.plot-caption` is a **short title**, two words, not a paragraph — "Publication
+year", "Cumulative pages". It is set in `--heading` rather than `--muted`
+because the lane labels right below it share the same mono uppercase type and
+would otherwise be indistinguishable from it. There is **no rule between the
+figures**; the gap and the titles separate them.
+
+If you add another chart on publication year, give it `yearScale()` rather than
+its own domain: a book then sits at the same place in both, and the pair reads
+as one figure you can scan down instead of two unrelated pictures.
+
+Its axis runs **whole calendar years**, January to December, so January sits
+where January sits and a quiet stretch looks like one. Months that have not
+happened yet are **axis only**: labelled, but no area, no marker and no table
+row, because a flat line across the rest of the year would claim a total that
+nothing has been read against. Past months with nothing finished *are* drawn,
+flat.
+
+Shared chrome, marks and the tooltip live in `src/styles/charts.css`, and the
+one tooltip script is in `library/index.astro` — it walks every `.plot-frame`
+on the page, so a new chart needs no script of its own.
+
+- **One ink, not two.** The palette is deliberately low-chroma, and no two of
+  its hues clear the colour-vision separation threshold against each other, so
+  category is carried by **mark shape** — filled disc for fiction, open ring
+  for non-fiction — and every mark is `--accent`. The first chart adds lane
+  position on top of that. Do not "fix" this by introducing a second chart
+  hue; re-facet instead.
+- **Axes label themselves in place.** Tick values sit just above their own
+  gridline at the left, so a chart needs no y gutter — which matters because x
+  is a percentage and a gutter would have to be pixels. The top rule carries
+  the unit (`3,500 pages`) instead of a separate axis label.
+- **No viewBox.** The SVG sets `width="100%"` with x positions as percentages
+  and y positions, radii and type in CSS pixels. A viewBox would scale the type
+  down with the chart and leave it unreadable on a phone.
+- **No text inside the SVG that a viewBox would shrink**, and no inline styles
+  anywhere: marks use presentation attributes, everything else is in the scoped
+  stylesheet, so the strict CSP still holds.
+- The tooltip is moved with a `transform`, never with `left`. An absolutely
+  positioned box shrinks to fit the space left of its containing block's edge,
+  so a title near the right edge would collapse to one word per line.
+- Marks carry a 2px ring in `--background` so near-neighbours stay separate at
+  phone width, and books within ~3.5% of the span are nudged off the row.
+- **One `<details>` data table serves both plots**, in `library/index.astro`,
+  not one per chart: the two are readings of the same rows, so per-chart tables
+  just repeat each other. Columns are Published, Title, Category, Pages, Month
+  read. It is the text equivalent of both charts, so nothing is hover-only and
+  no column may be dropped to fit — at phone width it sits in a
+  `.table-scroll` wrapper and scrolls sideways instead. The table's `min-width`
+  is under the 680px column, so no scrollbar appears on desktop.
+- **The area chart is built from rects, not a path.** SVG `d` and `points` do
+  not accept percentages — only `x`/`width` do — so a path cannot be fluid
+  without a viewBox. A cumulative step area happens to *be* a row of
+  rectangles, one per month, with the top edge traced as separate treads and
+  risers. Everything in it is axis-aligned, so `shape-rendering: crispEdges`
+  turns off antialiasing and removes the seams where abutting rects meet.
+- **Steps, not a curve.** A book counts on the month it was finished; nothing
+  is known about which pages were turned when, and a smoothed line would invent
+  it. Months with nothing finished stay in and read as flat.
+- The stack's second series is **hatched, not a second hue** — same one-ink
+  rule. The hatch is an SVG `<pattern>` whose line is styled from
+  `charts.css`, so it themes with everything else, and a 2px `--background`
+  rule separates the two fills.
+- Month binning is **UTC** (`getUTCMonth`). Frontmatter dates parse to UTC
+  midnight, so reading local months would file the 1st under the month before.
+- A month readout is a `<g class="pt pt-plain" tabindex="0">`, not an `<a>`:
+  the shared tooltip script keys on `.pt` and a `.dot` child, and `.pt-plain`
+  drops the pointer cursor because a month is not a link.
+
+Fiction vs non-fiction comes from the required `category` field in the library
+schema, not from `topics`: `topics` is a free tag list and most entries carry
+only `book`.
+
+`pages` is optional and filled in by `scripts/fetch-page-counts.mjs`, which
+queries Open Library (no key) and writes the count into frontmatter. Run it on
+demand — `node scripts/fetch-page-counts.mjs`, with `--dry-run` to preview or
+`--refresh` to redo entries that already have a count. It is deliberately not
+part of `astro build`: a page count never changes, and a build that calls a
+third-party API cannot run offline and can fail because someone else's service
+is down. It scores candidates on title, author and year rather than taking the
+first row, matches initials against spelled-out names, searches both the full
+and pre-colon title, and drops anything outside 8–5000 pages.
+
 ## Dot-grid and reading-column behavior
 
 The dot grid is a CSS radial gradient on `<body>`. Think of it as the desk the
@@ -338,7 +435,10 @@ self-contained visual widgets:
 - `MattedPhoto.astro`
 - `Poloroid.astro` and `Poloroid2.astro` (both currently unused)
 - `LightboxCarousel.astro`
-- `library/index.astro` (the cover grid and list toggle)
+- `library/index.astro` (the cover grid and view toggle)
+
+The chart components in `charts/` have no scoped styles at all; they share
+`src/styles/charts.css`.
 
 These components may still consume global theme tokens. Keep unique mechanics
 inside the component, but move any pattern reused elsewhere into the appropriate

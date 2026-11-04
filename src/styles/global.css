@@ -2,6 +2,7 @@
 @import "./tokens.css";
 @import "./layout.css";
 @import "./patterns.css";
+@import "./charts.css";
 @import "./content.css";
 
 * {

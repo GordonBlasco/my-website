@@ -3,6 +3,9 @@ import { getCollection, type CollectionEntry } from "astro:content";
 import { Image } from "astro:assets";
 import PageLayout from "../../layouts/PageLayout.astro";
 import FormattedDate from "../../components/layouts/FormattedDate.astro";
+import PublicationScatter from "../../components/charts/PublicationScatter.astro";
+import PagesReadArea from "../../components/charts/PagesReadArea.astro";
+import { monthLabel } from "../../components/charts/scale";
 
 const lastRead = (finishedDates: Date[]) =>
   finishedDates.length > 0
@@ -15,6 +18,34 @@ const sortDate = (post: CollectionEntry<"library">) =>
 const posts = (
   await getCollection("library", ({ data }) => !import.meta.env.PROD || !data.draft)
 ).sort((a, b) => sortDate(b) - sortDate(a));
+
+/*
+ * `publicationDate` is bibliographic text, so a year is parsed out of it rather
+ * than assumed; anything without one is left off the plot instead of landing on
+ * a made-up point.
+ */
+const plotBooks = posts
+  .map((post) => {
+    const year = Number(post.data.publicationDate.match(/\d{4}/)?.[0]);
+    return {
+      title: post.data.title,
+      href: `/library/${post.id}/`,
+      authors: post.data.authors,
+      category: post.data.category,
+      pages: post.data.pages,
+      finished: post.data.finishedDates,
+      year,
+    };
+  })
+  .filter((book) => Number.isFinite(book.year));
+
+/*
+ * One table for the whole view. Both plots are readings of the same rows, so a
+ * table under each would repeat itself; this is the text equivalent of both.
+ */
+const tableRows = [...plotBooks].sort(
+  (a, b) => a.year - b.year || a.title.localeCompare(b.title),
+);
 ---
 
 <PageLayout
@@ -27,6 +58,7 @@ const posts = (
     <div class="view-toggle" role="group" aria-label="Library view">
       <button type="button" data-view="grid" aria-pressed="true">Covers</button>
       <button type="button" data-view="list" aria-pressed="false">List</button>
+      <button type="button" data-view="plots" aria-pressed="false">Plots</button>
     </div>
   </div>
 
@@ -59,22 +91,115 @@ const posts = (
       <p class="empty-library">No books here yet.</p>
     )
   }
+
+  {plotBooks.length > 0 && (
+    <div class="library-plots" hidden>
+      <PublicationScatter books={plotBooks} />
+      <PagesReadArea books={plotBooks} />
+
+      <details class="plot-table">
+        <summary>Data table</summary>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Published</th>
+                <th scope="col">Title</th>
+                <th scope="col">Category</th>
+                <th scope="col">Pages</th>
+                <th scope="col">Month read</th>
+              </tr>
+            </thead>
+            <tbody>
+              {tableRows.map((book) => (
+                <tr>
+                  <td class="num">{book.year}</td>
+                  <td><a href={book.href}>{book.title}</a></td>
+                  <td class="num">{book.category === "fiction" ? "Fiction" : "Non-fiction"}</td>
+                  <td class="num">{book.pages ?? "—"}</td>
+                  <td class="num">
+                    {book.finished.length > 0
+                      ? book.finished.map(monthLabel).join(", ")
+                      : "—"}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </div>
+  )}
 </PageLayout>
 
 <script>
   const library = document.querySelector<HTMLOListElement>(".library-posts");
+  const plots = document.querySelector<HTMLElement>(".library-plots");
   const buttons = document.querySelectorAll<HTMLButtonElement>("[data-view]");
 
-  const setView = (view: "grid" | "list") => {
+  type View = "grid" | "list" | "plots";
+
+  const setView = (view: View) => {
     if (!library) return;
-    library.dataset.view = view;
+    // Plots replaces the listing rather than sitting beside it, so the two are
+    // swapped wholesale; grid and list stay a restyle of the same list.
+    const plotting = view === "plots";
+    library.hidden = plotting;
+    if (plots) plots.hidden = !plotting;
+    if (!plotting) library.dataset.view = view;
     buttons.forEach((button) =>
       button.setAttribute("aria-pressed", String(button.dataset.view === view)),
     );
   };
 
   buttons.forEach((button) => {
-    button.addEventListener("click", () => setView(button.dataset.view as "grid" | "list"));
+    button.addEventListener("click", () => setView(button.dataset.view as View));
+  });
+
+  /*
+   * Plot tooltips. One pass over every `.plot-frame` on the page, so the two
+   * charts share this rather than each shipping its own copy.
+   */
+  document.querySelectorAll<HTMLElement>(".plot-frame").forEach((frame) => {
+    const tip = frame.querySelector<HTMLElement>(".plot-tip");
+    const label = frame.querySelector<HTMLElement>(".tip-label");
+    const meta = frame.querySelector<HTMLElement>(".tip-meta");
+    if (!tip || !label || !meta) return;
+
+    const hide = () => {
+      tip.hidden = true;
+    };
+
+    // Either a book's `<a>` on the scatters or a month's `<g>` on the area chart.
+    const show = (point: SVGElement) => {
+      // Book titles are content, so they go in as text, never as markup.
+      label.textContent = point.dataset.label ?? "";
+      meta.textContent = point.dataset.meta ?? "";
+      tip.hidden = false;
+
+      const dot = point.querySelector(".dot") as SVGCircleElement | null;
+      if (!dot) return;
+      const mark = dot.getBoundingClientRect();
+      const box = frame.getBoundingClientRect();
+
+      // Centred over the mark, then pulled back inside the frame at the edges.
+      const half = tip.offsetWidth / 2;
+      const centre = mark.left + mark.width / 2 - box.left;
+      tip.style.setProperty(
+        "--tip-x",
+        `${Math.min(Math.max(centre, half + 4), box.width - half - 4)}px`,
+      );
+      tip.style.setProperty("--tip-y", `${mark.top - box.top - 10}px`);
+    };
+
+    frame.querySelectorAll<SVGElement>(".pt").forEach((point) => {
+      point.addEventListener("pointerenter", () => show(point));
+      point.addEventListener("pointerleave", hide);
+      point.addEventListener("focus", () => show(point));
+      point.addEventListener("blur", hide);
+    });
+
+    frame.addEventListener("pointerleave", hide);
   });
 </script>
 
@@ -113,6 +238,7 @@ const posts = (
   .view-toggle button:focus-visible { position: relative; outline: 2px solid var(--accent); outline-offset: 2px; }
 
   .library-posts { margin: 0; padding: 0; list-style: none; }
+
   /*
    * The track minimum is set so four covers fit the shared --content-width
    * with room to spare; the tracks then stretch to fill it. Raising it much
@@ -186,6 +312,14 @@ const posts = (
     font-size: 1rem;
     font-weight: 400;
   }
+  /*
+   * `display: grid` above outranks the `hidden` attribute's UA rule, so without
+   * this the cover grid stays on screen underneath the plot. It has to come
+   * after the view rules it is overriding, not before.
+   */
+  .library-posts[hidden],
+  .library-plots[hidden] { display: none; }
+
   .empty-library { color: var(--muted); }
 
   @media (max-width: 520px) {

@@ -1,0 +1,159 @@
+---
+/*
+ * Publication year by category, as two labelled lanes of dots.
+ *
+ * Computed at build time and shipped as static SVG; the only client work is
+ * reading a data attribute on hover (see the page's script). The SVG has no
+ * viewBox on purpose — x comes from the year scale as a percentage so the
+ * chart is fluid, while y, radii and type stay in CSS pixels, which a viewBox
+ * would otherwise shrink to illegibility on a phone.
+ *
+ * Chrome, marks and the tooltip are styled by src/styles/charts.css, shared
+ * with the area chart below it.
+ */
+import { PAD_L, PAD_R, yearScale, type PlotBook } from "./scale";
+
+interface Props {
+  books: PlotBook[];
+}
+
+const { books } = Astro.props as Props;
+
+const LANES = [
+  { key: "fiction", label: "Fiction" },
+  { key: "nonfiction", label: "Non-fiction" },
+] as const;
+
+/* Geometry, in CSS pixels for y. */
+const LANE_TOP = 6;
+const LANE_H = 74;
+const LABEL_DY = 13;
+const DOT_DY = 46;
+const AXIS_DY = 20;
+const AXIS_Y = LANE_TOP + LANES.length * LANE_H + AXIS_DY;
+const HEIGHT = AXIS_Y + 8;
+
+const scale = yearScale(books.map((b) => b.year));
+
+/*
+ * Two books published close together would draw as one blob, so within a lane
+ * a point that lands near its predecessor is nudged off the row. Alternating
+ * the sign keeps a run of them readable instead of walking off the lane.
+ */
+const NUDGE = 10;
+const tooClose = (scale.max - scale.min) * 0.035;
+
+const laneData = LANES.map((lane, laneIndex) => {
+  const laneY = LANE_TOP + laneIndex * LANE_H;
+  let lastYear = -Infinity;
+  let sign = 1;
+
+  const points = books
+    .filter((b) => b.category === lane.key)
+    .sort((a, b) => a.year - b.year)
+    .map((book) => {
+      const crowded = book.year - lastYear < tooClose;
+      sign = crowded ? -sign : 1;
+      lastYear = book.year;
+      return {
+        book,
+        x: scale.x(book.year),
+        y: laneY + DOT_DY + (crowded ? sign * NUDGE : 0),
+      };
+    });
+
+  return { ...lane, laneY, points };
+});
+
+---
+
+<figure class="plot-figure">
+  <figcaption class="plot-caption">Publication year</figcaption>
+
+  <div class="plot-frame">
+    <svg
+      class="plot"
+      width="100%"
+      height={HEIGHT}
+      role="img"
+      aria-label={`Plot of ${books.length} books by publication year, split into fiction and non-fiction lanes.`}
+    >
+      {
+        /*
+         * Ticks hang below each lane's rule like marks on a ruler. Drawn full
+         * height they crossed the lane labels; drawn through the rule they
+         * turned every decade into a plus sign.
+         */
+        laneData.flatMap((lane) =>
+          scale.ticks.map((year) => (
+            <line
+              class="gridline"
+              x1={scale.x(year)}
+              x2={scale.x(year)}
+              y1={lane.laneY + DOT_DY}
+              y2={lane.laneY + DOT_DY + 14}
+            />
+          )),
+        )
+      }
+
+      {
+        laneData.map((lane) => (
+          <>
+            <circle
+              class:list={["key-mark", `mark-${lane.key}`]}
+              cx="6"
+              cy={lane.laneY + LABEL_DY - 4}
+              r="4"
+            />
+            <text class="lane-label" x="18" y={lane.laneY + LABEL_DY}>
+              {lane.label}
+            </text>
+            <line
+              class="lane-rule"
+              x1={`${PAD_L - 4}%`}
+              x2={`${100 - PAD_R}%`}
+              y1={lane.laneY + DOT_DY}
+              y2={lane.laneY + DOT_DY}
+            />
+          </>
+        ))
+      }
+
+      {
+        scale.ticks.map((year, i) => (
+          <text
+            class:list={["tick", "tick-x", { "tick-minor": i % 2 === 1 }]}
+            x={scale.x(year)}
+            y={AXIS_Y}
+          >
+            {year}
+          </text>
+        ))
+      }
+
+      {
+        laneData.map((lane) =>
+          lane.points.map(({ book, x, y }) => (
+            <a
+              class="pt"
+              href={book.href}
+              data-label={book.title}
+              data-meta={`${book.year} · ${book.authors.join(" and ")}`}
+            >
+              <title>{`${book.title} — ${book.authors.join(" and ")}, published ${book.year}`}</title>
+              <circle class="halo" cx={x} cy={y} r="10" />
+              <circle class="hit" cx={x} cy={y} r="13" />
+              <circle class:list={["dot", `mark-${lane.key}`]} cx={x} cy={y} r="5" />
+            </a>
+          )),
+        )
+      }
+    </svg>
+
+    <div class="plot-tip" hidden>
+      <span class="tip-label"></span>
+      <span class="tip-meta"></span>
+    </div>
+  </div>
+</figure>

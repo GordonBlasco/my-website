@@ -2,6 +2,8 @@
 title: "Lives of the Saints"
 authors: ["Nancy Lemann"]
 publicationDate: "1985"
+category: fiction
+pages: 143
 pubDate: "2026-08-23"
 topics: [book]
 cover: "./covers/lives-of-the-saints-cover.jpg"

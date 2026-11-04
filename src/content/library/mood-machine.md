@@ -2,6 +2,8 @@
 title: "Mood Machine: The Rise of Spotify and the Costs of the Perfect Playlist"
 authors: ["Liz Pelly"]
 publicationDate: "2025"
+category: nonfiction
+pages: 288
 pubDate: "2026-02-12"
 topics: [book]
 cover: "./covers/mood-machine-cover.jpg"

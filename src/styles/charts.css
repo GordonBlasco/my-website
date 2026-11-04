@@ -1,0 +1,284 @@
+/*
+ * Shared chrome for the Library's plots. More than one chart uses it, so it
+ * lives here rather than in a scoped block — the rule the rest of the site
+ * follows.
+ *
+ * One ink, not two. The palette is deliberately low-chroma and no two of its
+ * hues clear the colour-vision separation threshold against each other, so
+ * category is carried by mark shape — a filled disc for fiction, an open ring
+ * for non-fiction — and every mark is --accent. Do not add a second chart hue.
+ */
+
+.plot-figure {
+  margin: 0;
+}
+
+/* No rule between the plots; the gap and the titles do the separating. */
+.plot-figure + .plot-figure {
+  margin-top: 3rem;
+}
+
+/*
+ * A short title, not a paragraph. In `--heading` rather than `--muted` so it
+ * reads as the figure's name and not as another legend label — the lane labels
+ * directly below it share the type.
+ */
+.plot-caption {
+  margin-bottom: 1rem;
+  color: var(--heading);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-label);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.plot-frame {
+  position: relative;
+}
+
+.plot {
+  display: block;
+  overflow: visible;
+}
+
+/* Chrome is one step off the paper and never competes with the marks. */
+.gridline,
+.lane-rule {
+  stroke: var(--border);
+  stroke-width: 1;
+}
+
+.lane-label,
+.axis-label {
+  fill: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.tick {
+  fill: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+}
+
+.tick-x {
+  text-anchor: middle;
+}
+
+.tick-y {
+  text-anchor: start;
+}
+
+.tick-year {
+  letter-spacing: 0.06em;
+}
+
+/*
+ * Both marks carry a 2px ring in the paper colour so two books a few years
+ * apart stay two dots at phone width instead of merging into a bar.
+ */
+.mark-fiction {
+  fill: var(--accent);
+  stroke: var(--background);
+  stroke-width: 2;
+}
+
+.mark-nonfiction {
+  fill: var(--background);
+  stroke: var(--accent);
+  stroke-width: 2;
+}
+
+/*
+ * The cumulative area. Drawn as abutting rects, so antialiasing on the shared
+ * vertical edges would leave visible seams down the fill — everything in this
+ * chart is axis-aligned, so turning it off costs nothing.
+ */
+.area-fiction {
+  fill: var(--accent);
+  fill-opacity: 0.42;
+  shape-rendering: crispEdges;
+}
+
+.area-nonfiction {
+  fill: url(#pages-hatch);
+}
+
+.hatch-line {
+  stroke: var(--accent);
+  stroke-width: 1;
+}
+
+/*
+ * The markers on the running total read a value off the top edge; they are not
+ * a third category, so they get their own class rather than borrowing the
+ * fiction mark's.
+ */
+.mark-total {
+  fill: var(--accent);
+  stroke: var(--background);
+  stroke-width: 2;
+}
+
+/* 2px of paper between the stacked fills, so the two never touch. */
+.area-split {
+  stroke: var(--background);
+  stroke-width: 2;
+  shape-rendering: crispEdges;
+}
+
+.area-edge {
+  stroke: var(--accent);
+  stroke-width: 2;
+  shape-rendering: crispEdges;
+}
+
+.key-swatch {
+  stroke: var(--accent);
+  stroke-width: 1;
+}
+
+.hit {
+  fill: transparent;
+}
+
+.halo {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.5;
+  opacity: 0;
+}
+
+.pt {
+  cursor: pointer;
+  outline: none;
+}
+
+/* A month is a readout, not a link, so it does not pretend to be clickable. */
+.pt-plain {
+  cursor: default;
+}
+
+.pt:hover .halo,
+.pt:focus-visible .halo {
+  opacity: 0.45;
+}
+
+/*
+ * Anchored at the frame's origin and moved with a transform, never with
+ * `left`. An absolutely positioned box shrinks to fit the space left of its
+ * containing block's edge, so a title near the right edge would collapse to
+ * one word per line.
+ */
+.plot-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  width: max-content;
+  max-width: 16rem;
+  padding: 0.45rem 0.6rem;
+  border-top: 2px solid var(--accent);
+  background: var(--card);
+  box-shadow: var(--shadow-soft);
+  pointer-events: none;
+  transform: translate(calc(var(--tip-x, 0px) - 50%), calc(var(--tip-y, 0px) - 100%));
+}
+
+.tip-label {
+  display: block;
+  color: var(--heading);
+  font-size: 0.9rem;
+  line-height: 1.3;
+}
+
+.tip-meta {
+  display: block;
+  margin-top: 0.2rem;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-meta);
+}
+
+/* The table is the chart's text equivalent: nothing is hover-only. */
+.plot-table {
+  margin-top: 2rem;
+  border-top: 1px solid var(--border);
+}
+
+.plot-table summary {
+  padding: 0.6rem 0;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-label);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+/*
+ * Five columns do not fit a phone. Scroll rather than drop one: the table is
+ * the plots' text equivalent, so it has to stay complete at every width.
+ */
+.plot-table .table-scroll {
+  margin-bottom: 1rem;
+  overflow-x: auto;
+}
+
+.plot-table table {
+  /* Narrower than the 680px column, so no scrollbar appears on desktop; wide
+   * enough that a long title still wraps to two or three lines, not one word
+   * per line. */
+  width: 100%;
+  min-width: 32rem;
+  border-collapse: collapse;
+}
+
+.plot-table th {
+  padding: 0.4rem 0.75rem 0.4rem 0;
+  border-bottom: 1px solid var(--border);
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-label);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-align: left;
+  text-transform: uppercase;
+  /* Headers set the column's minimum; a two-word one wrapping above
+   * single-line values reads as a ragged edge. The table scrolls, so there is
+   * room for them. */
+  white-space: nowrap;
+}
+
+.plot-table td {
+  padding: 0.4rem 0.75rem 0.4rem 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.95rem;
+}
+
+.plot-table td.num {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-meta);
+  white-space: nowrap;
+}
+
+.plot-table a {
+  color: var(--link);
+  text-decoration: none;
+}
+
+.plot-table a:hover,
+.plot-table a:focus-visible {
+  text-decoration: underline;
+  text-decoration-color: var(--link-underline);
+}
+
+/* Eight year labels will not fit across a phone, so drop every other one. */
+@media (max-width: 520px) {
+  .tick-minor {
+    display: none;
+  }
+}

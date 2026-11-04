@@ -28,6 +28,14 @@ const library = defineCollection({
       // First publication of the work. Kept as bibliographic text because many
       // older works are known only to a year (and some only approximately).
       publicationDate: z.string(),
+      // Fiction or not. Kept separate from `topics`, which is a free tag list and
+      // cannot be trusted to carry this: most entries are tagged only `book`.
+      // Required on purpose — a new entry should have to say which it is rather
+      // than default into one side of the Plots view.
+      category: z.enum(["fiction", "nonfiction"]),
+      // Filled in from Open Library by scripts/fetch-page-counts.mjs, and
+      // optional because the catalogue has no confident match for every book.
+      pages: z.number().int().positive().optional(),
       authors: z.array(z.string()).min(1),
       updatedDate: z.coerce.date().optional(),
       topics: z.array(z.string()).optional(),

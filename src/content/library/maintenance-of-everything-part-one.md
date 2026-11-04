@@ -2,6 +2,8 @@
 title: "Maintenance: Of Everything, Part One"
 authors: ["Stewart Brand"]
 publicationDate: "2026"
+category: nonfiction
+pages: 308
 pubDate: "2026-09-21"
 topics: [maintenance, technology, infrastructure, book]
 cover: "./covers/maintenance-of-everything-part-one-cover.png"

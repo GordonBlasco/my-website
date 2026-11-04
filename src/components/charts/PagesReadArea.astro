@@ -1,0 +1,264 @@
+---
+/*
+ * Pages finished per month, stacked and accumulated.
+ *
+ * The top edge is the pace — total pages read since the first entry — and the
+ * split inside it is fiction against non-fiction. A book counts on the month it
+ * was finished, so the series is a staircase, not a curve: nothing is known
+ * about which pages were turned on which day, and a smooth line would invent
+ * that. Months with nothing finished stay in and read as flat.
+ *
+ * Built from rects, not a path, because SVG `d` and `points` do not accept
+ * percentages — only `x`/`width` do. That is what keeps the chart fluid without
+ * a viewBox, which would shrink the type along with the plot. It also happens to
+ * suit the data: a step area *is* a row of rectangles.
+ *
+ * x is months here, not publication year, so nothing should be read across
+ * between this chart and the scatter above it.
+ *
+ * The axis runs whole calendar years, so January sits where January sits and a
+ * quiet stretch looks like one. Months that have not happened yet are axis
+ * only — labelled, never drawn — because a flat line across the rest of the
+ * year would claim a total that nothing has been read against.
+ *
+ * The data table is not here: one table in library/index.astro serves both
+ * plots, since they are two readings of the same ten rows.
+ */
+import { PAD_L, PAD_R, monthScale, monthOrdinal, countTicks, type PlotBook } from "./scale";
+
+interface Props {
+  books: PlotBook[];
+}
+
+const { books } = Astro.props as Props;
+
+const CATEGORIES = [
+  { key: "fiction", label: "Fiction" },
+  { key: "nonfiction", label: "Non-fiction" },
+] as const;
+
+/*
+ * A finish with no page count cannot be added up, so it is left out rather than
+ * guessed at. Each entry in `finishedDates` counts: finishing a book a second
+ * time means those pages were read a second time.
+ */
+const finishes = books.flatMap((book) =>
+  typeof book.pages === "number"
+    ? book.finished.map((date) => ({ date, book, pages: book.pages as number }))
+    : [],
+);
+
+const scale = monthScale(finishes.map((f) => f.date));
+
+/* Month totals, then the running sum of each category. */
+const rows = scale.months.map((month) => {
+  const inMonth = finishes.filter(
+    (f) => `${f.date.getUTCFullYear()}-${String(f.date.getUTCMonth() + 1).padStart(2, "0")}` === month.key,
+  );
+  const byCategory = (key: string) =>
+    inMonth.filter((f) => f.book.category === key).reduce((sum, f) => sum + f.pages, 0);
+  return {
+    month,
+    titles: inMonth.map((f) => f.book.title),
+    fiction: byCategory("fiction"),
+    nonfiction: byCategory("nonfiction"),
+    pages: inMonth.reduce((sum, f) => sum + f.pages, 0),
+  };
+});
+
+/* A month counts as happened once it has begun; the current one is partial but
+ * its finishes are real. */
+const thisMonth = monthOrdinal(new Date());
+
+let runFiction = 0;
+let runNonfiction = 0;
+const stacks = rows.map((row, i) => {
+  runFiction += row.fiction;
+  runNonfiction += row.nonfiction;
+  return { ...row, i, cumFiction: runFiction, cumTotal: runFiction + runNonfiction };
+});
+
+/* Always a prefix of the months, since the axis cannot start after today. */
+const drawn = stacks.filter((row) => row.month.ordinal <= thisMonth);
+
+/* Geometry, in CSS pixels for y. */
+const KEY_Y = 12;
+const TOP = 42;
+const PLOT_H = 220;
+const BASE = TOP + PLOT_H;
+const AXIS_Y = BASE + 24;
+const YEAR_Y = AXIS_Y + 15;
+const HEIGHT = YEAR_Y + 6;
+
+const pageTicks = countTicks(drawn.at(-1)?.cumTotal ?? 1, 7);
+const topTick = pageTicks.at(-1) ?? 1;
+const y = (pages: number) => BASE - (pages / topTick) * PLOT_H;
+
+const count = (n: number) => n.toLocaleString("en-US");
+
+/* Twelve month labels will not fit a phone, so thin them out. */
+const thin = scale.months.length > 6;
+---
+
+<figure class="plot-figure">
+  <figcaption class="plot-caption">Cumulative pages</figcaption>
+
+  <div class="plot-frame">
+    <svg
+      class="plot"
+      width="100%"
+      height={HEIGHT}
+      role="img"
+      aria-label={`Cumulative pages read by month, from ${drawn[0]?.month.full} to ${drawn.at(-1)?.month.full}, split into fiction and non-fiction.`}
+    >
+      <defs>
+        {/*
+          * Non-fiction is hatched rather than given a second hue. The palette is
+          * low-chroma and no two of its colours clear the colour-vision
+          * separation threshold, so the chart stays one ink and varies texture.
+          */}
+        <pattern
+          id="pages-hatch"
+          width="7"
+          height="7"
+          patternUnits="userSpaceOnUse"
+          patternTransform="rotate(45)"
+        >
+          <line class="hatch-line" x1="0" y1="0" x2="0" y2="7" />
+        </pattern>
+      </defs>
+
+      <rect class="key-swatch area-fiction" x="0" y={KEY_Y - 9} width="11" height="11" />
+      <text class="lane-label" x="18" y={KEY_Y}>Fiction</text>
+      <rect class="key-swatch area-nonfiction" x="104" y={KEY_Y - 9} width="11" height="11" />
+      <text class="lane-label" x="122" y={KEY_Y}>Non-fiction</text>
+
+      {
+        /* Ruled-paper y axis: the value sits just above its own line, so the
+         * chart needs no gutter in pixels against a percentage x. */
+        pageTicks.map((pages) => (
+          <>
+            <line
+              class="gridline"
+              x1={`${PAD_L - 4}%`}
+              x2={`${100 - PAD_R}%`}
+              y1={y(pages)}
+              y2={y(pages)}
+            />
+            <text class="tick tick-y" x={`${PAD_L - 4}%`} y={y(pages) - 5}>
+              {pages === topTick ? `${count(pages)} pages` : count(pages)}
+            </text>
+          </>
+        ))
+      }
+
+      {
+        /* The stack. Two rects per month; a month that added nothing to a
+         * category gets a zero-height rect, which draws nothing. */
+        drawn.map(({ i, ...row }) => (
+          <>
+            <rect
+              class="area-fiction"
+              x={scale.edge(i)}
+              width={scale.width}
+              y={y(row.cumFiction)}
+              height={BASE - y(row.cumFiction)}
+            />
+            <rect
+              class="area-nonfiction"
+              x={scale.edge(i)}
+              width={scale.width}
+              y={y(row.cumTotal)}
+              height={y(row.cumFiction) - y(row.cumTotal)}
+            />
+          </>
+        ))
+      }
+
+      {
+        /* Separator in the paper colour, so the two fills never touch. */
+        drawn.map(({ i, ...row }) =>
+          row.cumTotal > row.cumFiction && row.cumFiction > 0 ? (
+            <line
+              class="area-split"
+              x1={scale.edge(i)}
+              x2={scale.edge(i + 1)}
+              y1={y(row.cumFiction)}
+              y2={y(row.cumFiction)}
+            />
+          ) : null,
+        )
+      }
+
+      {
+        /* The total, traced as treads and risers. */
+        drawn.map(({ i, ...row }, k) => (
+          <>
+            <line
+              class="area-edge"
+              x1={scale.edge(i)}
+              x2={scale.edge(i + 1)}
+              y1={y(row.cumTotal)}
+              y2={y(row.cumTotal)}
+            />
+            {k > 0 && (
+              <line
+                class="area-edge"
+                x1={scale.edge(i)}
+                x2={scale.edge(i)}
+                y1={y(drawn[k - 1].cumTotal)}
+                y2={y(row.cumTotal)}
+              />
+            )}
+          </>
+        ))
+      }
+
+      <line class="lane-rule" x1={`${PAD_L - 4}%`} x2={`${100 - PAD_R}%`} y1={BASE} y2={BASE} />
+
+      {
+        scale.months.map((month, i) => (
+          <>
+            <text
+              class:list={["tick", "tick-x", { "tick-minor": thin && i % 2 === 1 }]}
+              x={scale.centre(i)}
+              y={AXIS_Y}
+            >
+              {month.label}
+            </text>
+            {/* The year is written once, and again whenever it turns over. */}
+            {(i === 0 || month.month === 0) && (
+              <text class="tick tick-x tick-year" x={scale.centre(i)} y={YEAR_Y}>
+                {month.year}
+              </text>
+            )}
+          </>
+        ))
+      }
+
+      {
+        /* One readout per month, hit area spanning the full band. A month with
+         * nothing finished still has a running total worth reading. */
+        drawn.map(({ i, ...row }) => (
+          <g
+            class="pt pt-plain"
+            tabindex="0"
+            role="img"
+            aria-label={`${row.month.full}: ${count(row.pages)} pages finished, ${count(row.cumTotal)} in total.`}
+            data-label={row.month.full}
+            data-meta={`${row.pages > 0 ? `+${count(row.pages)} pages · ` : "nothing finished · "}${count(row.cumTotal)} total`}
+          >
+            <rect class="hit" x={scale.edge(i)} width={scale.width} y={TOP - 8} height={BASE - TOP + 8} />
+            <circle class="halo" cx={scale.centre(i)} cy={y(row.cumTotal)} r="10" />
+            <circle class="dot mark-total" cx={scale.centre(i)} cy={y(row.cumTotal)} r="5" />
+          </g>
+        ))
+      }
+    </svg>
+
+    <div class="plot-tip" hidden>
+      <span class="tip-label"></span>
+      <span class="tip-meta"></span>
+    </div>
+  </div>
+</figure>

@@ -2,6 +2,8 @@
 title: "Libra"
 authors: ["Don DeLillo"]
 publicationDate: "1988"
+category: fiction
+pages: 468
 pubDate: "2026-06-03"
 topics: [book]
 cover: "./covers/libra-cover.jpg"
